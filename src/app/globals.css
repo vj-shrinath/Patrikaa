@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-body antialiased;
+  }
+}
+
+@layer base {
+  :root, .theme-default {
+    --background: 60 56% 91%; /* Light beige */
+    --foreground: 333 62% 10%; /* Darker maroon for text */
+    --card: 60 56% 93%;
+    --card-foreground: 333 62% 10%;
+    --popover: 60 56% 93%;
+    --popover-foreground: 333 62% 10%;
+    --primary: 333 62% 19%; /* Maroon */
+    --primary-foreground: 46 65% 90%; /* Light Gold */
+    --secondary: 333 62% 30%;
+    --secondary-foreground: 46 65% 90%;
+    --muted: 60 20% 85%;
+    --muted-foreground: 333 20% 30%;
+    --accent: 46 65% 52%; /* Gold */
+    --accent-foreground: 333 62% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 333 30% 60%;
+    --input: 60 20% 95%;
+    --ring: 46 65% 52%; /* Gold for rings */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .theme-royal-blue {
+    --background: 220 40% 92%;
+    --foreground: 221 83% 10%;
+    --card: 220 40% 94%;
+    --card-foreground: 221 83% 10%;
+    --popover: 220 40% 94%;
+    --popover-foreground: 221 83% 10%;
+    --primary: 221 83% 30%; /* Royal Blue */
+    --primary-foreground: 45 100% 95%; /* Light Yellow */
+    --secondary: 221 83% 40%;
+    --secondary-foreground: 45 100% 95%;
+    --muted: 220 30% 88%;
+    --muted-foreground: 221 30% 30%;
+    --accent: 45 100% 70%; /* Bright Yellow */
+    --accent-foreground: 221 83% 10%;
+    --border: 220 40% 60%;
+    --input: 220 40% 96%;
+    --ring: 45 100% 70%;
+  }
+
+  .theme-emerald-green {
+    --background: 145 30% 93%;
+    --foreground: 145 63% 10%;
+    --card: 145 30% 95%;
+    --card-foreground: 145 63% 10%;
+    --popover: 145 30% 95%;
+    --popover-foreground: 145 63% 10%;
+    --primary: 145 63% 20%; /* Emerald Green */
+    --primary-foreground: 95 53% 92%; /* Light Green */
+    --secondary: 145 63% 30%;
+    --secondary-foreground: 95 53% 92%;
+    --muted: 145 20% 88%;
+    --muted-foreground: 145 20% 30%;
+    --accent: 95 53% 70%; /* Soft Lime */
+    --accent-foreground: 145 63% 10%;
+    --border: 145 30% 60%;
+    --input: 145 30% 97%;
+    --ring: 95 53% 70%;
+  }
+
+  .theme-ruby-red {
+    --background: 350 40% 94%;
+    --foreground: 350 70% 15%;
+    --card: 350 40% 96%;
+    --card-foreground: 350 70% 15%;
+    --popover: 350 40% 96%;
+    --popover-foreground: 350 70% 15%;
+    --primary: 350 70% 35%; /* Ruby Red */
+    --primary-foreground: 20 100% 96%; /* Pale Peach */
+    --secondary: 350 70% 45%;
+    --secondary-foreground: 20 100% 96%;
+    --muted: 350 25% 89%;
+    --muted-foreground: 350 25% 35%;
+    --accent: 20 100% 75%; /* Soft Orange */
+    --accent-foreground: 350 70% 15%;
+    --border: 350 40% 65%;
+    --input: 350 40% 98%;
+    --ring: 20 100% 75%;
+  }
+
+  .dark {
+    --background: 333 10% 10%;
+    --foreground: 60 50% 90%;
+    --card: 333 10% 10%;
+    --card-foreground: 60 50% 90%;
+    --popover: 333 10% 10%;
+    --popover-foreground: 60 50% 90%;
+    --primary: 46 65% 52%; /* Gold */
+    --primary-foreground: 333 62% 10%;
+    --secondary: 46 65% 40%;
+    --secondary-foreground: 333 62% 10%;
+    --muted: 333 10% 20%;
+    --muted-foreground: 60 50% 70%;
+    --accent: 333 62% 19%; /* Maroon */
+    --accent-foreground: 46 65% 85%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 333 10% 30%;
+    --input: 333 10% 20%;
+    --ring: 46 65% 52%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.first-page {
+  @apply relative w-full min-h-screen p-2 flex flex-col items-center justify-center overflow-hidden sm:p-8;
+}
+
+.page {
+  @apply relative w-full p-2 flex flex-col items-center justify-center overflow-hidden sm:p-8 sm:min-h-screen;
+}
+
+.inner-card {
+  @apply relative w-full max-w-2xl bg-card rounded-lg shadow-2xl;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  color: hsl(var(--primary));
+}
+
+.inner-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  margin: -2px;
+  border-radius: inherit;
+  background: linear-gradient(to right, hsl(var(--accent)), hsl(var(--primary)), hsl(var(--accent)));
+}
+
+.inner-card-solid {
+  @apply relative w-full max-w-2xl bg-primary rounded-lg shadow-2xl text-primary-foreground;
+}
+
+.dhol-animate {
+  animation: dhol-beat 1s infinite alternate;
+}
+
+@keyframes dhol-beat {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+.swastik-animate {
+  animation: zoom-pulse 3s infinite;
+}
+
+@keyframes zoom-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.floral-corner {
+  @apply absolute w-16 h-16 sm:w-40 sm:h-40 pointer-events-none z-10;
+}
+
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes sparkle-animation {
+  0% {
+    transform: scale(0) translate(0, 0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) var(--tw-translate-x) var(--tw-translate-y);
+    opacity: 0;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  background-color: hsl(var(--accent));
+  border-radius: 50%;
+  animation: sparkle-animation var(--animation-duration) linear infinite;
+}

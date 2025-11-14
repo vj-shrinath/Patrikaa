@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         order_note: req.body?.order_note || "Test order from Vercel",
         order_meta: {
           // ✅ Redirect user back to success page
-          return_url: `${NEXT_PUBLIC_SITE_URL}/dashboard/success?order_id=${orderId}`,
+          return_url: `${NEXT_PUBLIC_SITE_URL}/success?order_id=${orderId}`,
         },
       }),
     });

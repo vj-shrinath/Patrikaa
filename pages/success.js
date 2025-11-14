@@ -52,14 +52,21 @@ export default function Success() {
         if (data.order_status === 'PAID') {
           setStatus('paid');
           try {
-            const userDocSnap = await getDoc(userDocRef);
-            const currentBalance = userDocSnap.exists() ? userDocSnap.data().walletBalance || 0 : 0;
-            const newBalance = currentBalance + data.order_amount;
-            
-            await updateDoc(userDocRef, { 
-                walletBalance: newBalance,
-                lastTopUp: new Date().toISOString()
-            });
+            const update = await fetch("/api/updateWallet", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    uid: user.uid,
+    amount: data.order_amount,
+  }),
+});
+
+const result = await update.json();
+
+if (!result.success) {
+  throw new Error("Wallet update failed");
+}
+
 
             setTimeout(() => {
                 router.push('/dashboard');

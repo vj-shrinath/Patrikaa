@@ -1,7 +1,7 @@
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { initializeApp, getApps } from 'firebase/app';
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
@@ -52,21 +52,16 @@ export default function Success() {
         if (data.order_status === 'PAID') {
           setStatus('paid');
           try {
-            const update = await fetch("/api/updateWallet", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    uid: user.uid,
-    amount: data.order_amount,
-  }),
-});
-
-const result = await update.json();
-
-if (!result.success) {
-  throw new Error("Wallet update failed");
-}
-
+            const userDocSnap = await getDoc(userDocRef);
+            const currentBalance = userDocSnap.exists() ? userDocSnap.data().walletBalance || 0 : 0;
+            const newBalance = currentBalance + data.order_amount;
+            
+            // Use setDoc with merge: true to prevent "No document to update" error
+            // This will create the document if it doesn't exist, or update it if it does.
+            await setDoc(userDocRef, { 
+                walletBalance: newBalance,
+                lastTopUp: new Date().toISOString()
+            }, { merge: true });
 
             setTimeout(() => {
                 router.push('/dashboard');

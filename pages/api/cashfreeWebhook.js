@@ -1,11 +1,8 @@
 export const config = {
   api: {
-    bodyParser: false, // Cashfree sends raw body
+    bodyParser: false,
   },
 };
-
-
-import { buffer } from "micro";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -13,15 +10,30 @@ export default async function handler(req, res) {
   }
 
   try {
-    const rawBody = (await buffer(req)).toString();
-    const event = JSON.parse(rawBody);
+    const rawBody = await getRawBody(req);
+    const event = JSON.parse(rawBody.toString());
 
-    console.log("🔔 Cashfree Webhook Received:", event);
+    console.log("🔔 Webhook Event:", event);
 
-    // Must respond with 200 OK
     return res.status(200).json({ status: "success" });
-  } catch (error) {
-    console.error("Webhook Error:", error);
+  } catch (err) {
+    console.error("Webhook Error:", err);
     return res.status(500).json({ status: "error" });
   }
+}
+
+function getRawBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = [];
+
+    req.on("data", (chunk) => {
+      data.push(chunk);
+    });
+
+    req.on("end", () => {
+      resolve(Buffer.concat(data));
+    });
+
+    req.on("error", reject);
+  });
 }

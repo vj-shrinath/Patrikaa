@@ -32,9 +32,9 @@ export default async function handler(req, res) {
         order_amount: req.body?.order_amount || 1.0,
         order_currency: "INR",
         customer_details: {
-          customer_id: req.body?.customer_id || "",
-          customer_email: req.body?.customer_email || "",
-          customer_phone: req.body?.customer_phone || "",
+          customer_id: req.body?.customer_id || "cust_001",
+          customer_email: req.body?.customer_email || "test@example.com",
+          customer_phone: req.body?.customer_phone || "9999999999",
         },
         order_note: req.body?.order_note || "Test order from Vercel",
         order_meta: {

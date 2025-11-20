@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const CASHFREE_SECRET_KEY = process.env.CASHFREE_SECRET_KEY;
 
   try {
-    const response = await fetch(`https://sandbox.cashfree.com/pg/orders/${orderId}`, {
+    const response = await fetch(`https://api.cashfree.com/pg/orders/${orderId}`, {
       method: "GET",
       headers: {
         "x-client-id": CASHFREE_APP_ID,
@@ -22,3 +22,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: true, message: "Server Error" });
   }
 }
+

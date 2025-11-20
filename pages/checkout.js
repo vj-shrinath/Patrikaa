@@ -7,41 +7,45 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, CreditCard, Loader2 } from "lucide-react";
 import Script from "next/script";
 
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { initializeApp, getApps } from "firebase/app";
 import { firebaseConfig } from "@/firebase/config";
 
-// Initialize firebase
+// Initialize Firebase once
 if (!getApps().length) initializeApp(firebaseConfig);
 
 export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(10);
-  const [userDetails, setUserDetails] = useState(null);
-
+  const [userData, setUserData] = useState(null);
   const router = useRouter();
+
   const { amount: queryAmount } = router.query;
 
-  // Load user details from Firestore
+  // Load user details from Firebase Auth + Firestore
   useEffect(() => {
-    const fetchUserData = async () => {
-      const auth = getAuth();
-      const user = auth.currentUser;
-
-      if (!user) return;
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser) return;
 
       const db = getFirestore();
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const userRef = doc(db, "users", firebaseUser.uid);
+      const snap = await getDoc(userRef);
 
-      if (userDoc.exists()) {
-        setUserDetails(userDoc.data());
+      if (snap.exists()) {
+        setUserData({
+          uid: firebaseUser.uid,
+          email: snap.data().email,
+          phone: snap.data().phoneNumber,
+        });
       }
-    };
+    });
 
-    fetchUserData();
+    return () => unsubscribe();
   }, []);
 
+  // Handle pre-filled amount from URL
   useEffect(() => {
     if (router.isReady) {
       const parsedAmount = parseFloat(queryAmount);
@@ -51,25 +55,26 @@ export default function Checkout() {
     }
   }, [router.isReady, queryAmount]);
 
+  // Create cashfree order
   const createOrder = async (e) => {
     e.preventDefault();
-    if (!userDetails) {
-      alert("User details not loaded!");
-      return;
-    }
-
     setLoading(true);
 
     try {
+      if (!userData) {
+        alert("User details not loaded!");
+        return;
+      }
+
       const res = await fetch("/api/createCashfreeOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           order_amount: parseFloat(amount),
-          customer_id: userDetails.uid,
-          customer_email: userDetails.email,
-          customer_phone: String(userDetails.phoneNumber), // convert number -> string
-          order_note: `Wallet top-up: ₹${amount}`,
+          customer_id: userData.uid,
+          customer_email: userData.email,
+          customer_phone: userData.phone,
+          order_note: `Add to wallet: ${amount}`,
         }),
       });
 
@@ -77,7 +82,8 @@ export default function Checkout() {
 
       if (data?.payment_session_id) {
         const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
-        const cashfree = new window.CCashfree({ mode });
+
+        const cashfree = new window.Cashfree({ mode });
 
         cashfree.checkout({
           paymentSessionId: data.payment_session_id,
@@ -98,7 +104,7 @@ export default function Checkout() {
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md shadow-xl border border-gray-200">
           <CardHeader>
             <Button variant="ghost" size="sm" className="w-fit mb-2 -ml-2" onClick={() => router.back()}>
               <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
@@ -109,23 +115,20 @@ export default function Checkout() {
               Add Funds to Wallet
             </CardTitle>
 
-            <CardDescription>Enter the amount you wish to add to your wallet.</CardDescription>
+            <CardDescription>Enter the amount you wish to add.</CardDescription>
           </CardHeader>
 
           <CardContent>
             <form onSubmit={createOrder} className="space-y-6">
               <div>
                 <Label htmlFor="amount">Amount (INR)</Label>
-
-                <div className="relative mt-1 rounded-md shadow-sm">
-                  <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none">
-                    <span className="text-muted-foreground">₹</span>
-                  </div>
-
+                <div className="relative mt-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                   <Input
                     type="number"
                     id="amount"
                     className="pl-7 h-11 text-base"
+                    placeholder="10.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     min="1"
@@ -133,7 +136,6 @@ export default function Checkout() {
                     disabled={!!queryAmount}
                   />
                 </div>
-
                 {queryAmount && (
                   <p className="mt-2 text-xs text-muted-foreground">
                     This amount is required to complete your previous action.
@@ -146,7 +148,13 @@ export default function Checkout() {
                 disabled={loading || !amount || amount < 1}
                 className="w-full h-11 text-base"
               >
-                {loading ? <><Loader2 className="animate-spin" /> Processing…</> : `Pay ₹${amount}`}
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin" /> Processing…
+                  </>
+                ) : (
+                  `Pay ₹${amount}`
+                )}
               </Button>
             </form>
           </CardContent>

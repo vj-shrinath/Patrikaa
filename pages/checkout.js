@@ -7,11 +7,40 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, CreditCard, Loader2 } from "lucide-react";
 import Script from "next/script";
 
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { initializeApp, getApps } from "firebase/app";
+import { firebaseConfig } from "@/firebase/config";
+
+// Initialize firebase
+if (!getApps().length) initializeApp(firebaseConfig);
+
 export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(10);
+  const [userDetails, setUserDetails] = useState(null);
+
   const router = useRouter();
   const { amount: queryAmount } = router.query;
+
+  // Load user details from Firestore
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (!user) return;
+
+      const db = getFirestore();
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+
+      if (userDoc.exists()) {
+        setUserDetails(userDoc.data());
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -24,6 +53,11 @@ export default function Checkout() {
 
   const createOrder = async (e) => {
     e.preventDefault();
+    if (!userDetails) {
+      alert("User details not loaded!");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -32,10 +66,10 @@ export default function Checkout() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           order_amount: parseFloat(amount),
-          customer_id: "cust_001",
-          customer_email: "test@example.com",
-          customer_phone: "9999999999",
-          order_note: `Add to wallet: ${amount}`,
+          customer_id: userDetails.uid,
+          customer_email: userDetails.email,
+          customer_phone: String(userDetails.phoneNumber), // convert number -> string
+          order_note: `Wallet top-up: ₹${amount}`,
         }),
       });
 
@@ -43,8 +77,7 @@ export default function Checkout() {
 
       if (data?.payment_session_id) {
         const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
-
-        const cashfree = new window.Cashfree({ mode });
+        const cashfree = new window.CCashfree({ mode });
 
         cashfree.checkout({
           paymentSessionId: data.payment_session_id,
@@ -70,21 +103,22 @@ export default function Checkout() {
             <Button variant="ghost" size="sm" className="w-fit mb-2 -ml-2" onClick={() => router.back()}>
               <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
             </Button>
+
             <CardTitle className="flex items-center gap-2 text-2xl font-headline">
               <CreditCard className="h-7 w-7 text-primary" />
               Add Funds to Wallet
             </CardTitle>
-            <CardDescription>
-              Enter the amount you wish to add to your balance.
-            </CardDescription>
+
+            <CardDescription>Enter the amount you wish to add to your wallet.</CardDescription>
           </CardHeader>
 
           <CardContent>
             <form onSubmit={createOrder} className="space-y-6">
               <div>
                 <Label htmlFor="amount">Amount (INR)</Label>
+
                 <div className="relative mt-1 rounded-md shadow-sm">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <div className="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none">
                     <span className="text-muted-foreground">₹</span>
                   </div>
 
@@ -92,7 +126,6 @@ export default function Checkout() {
                     type="number"
                     id="amount"
                     className="pl-7 h-11 text-base"
-                    placeholder="10.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     min="1"
@@ -113,13 +146,7 @@ export default function Checkout() {
                 disabled={loading || !amount || amount < 1}
                 className="w-full h-11 text-base"
               >
-                {loading ? (
-                  <>
-                    <Loader2 className="animate-spin" /> Processing...
-                  </>
-                ) : (
-                  `Pay ₹${amount}`
-                )}
+                {loading ? <><Loader2 className="animate-spin" /> Processing…</> : `Pay ₹${amount}`}
               </Button>
             </form>
           </CardContent>

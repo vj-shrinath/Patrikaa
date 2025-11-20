@@ -35,10 +35,10 @@ export default function Checkout() {
 
       if (snap.exists()) {
         setUserData({
-          uid: firebaseUser.uid,
-          email: snap.data().email,
-          phone: snap.data().phoneNumber,
-        });
+  uid: firebaseUser.uid,
+  email: snap.data().email,
+  phone: String(snap.data().phoneNumber),   // 👈 IMPORTANT FIX
+});
       }
     });
 

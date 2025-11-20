@@ -6,8 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, CreditCard, Loader2 } from "lucide-react";
 import Script from "next/script";
-import { getAuth } from "firebase/auth";
-
 
 export default function Checkout() {
   const [loading, setLoading] = useState(false);
@@ -25,50 +23,44 @@ export default function Checkout() {
   }, [router.isReady, queryAmount]);
 
   const createOrder = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) {
-      alert("Please login first");
-      setLoading(false);
-      return;
-    }
-
-    const res = await fetch("/api/createCashfreeOrder", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        order_amount: parseFloat(amount),
-        customer_id: user.uid,
-        customer_email: user.email,
-        customer_phone: user.phoneNumber || "9999999999",
-        order_note: `Add to wallet: ${amount}`,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (data?.payment_session_id) {
-      const cashfree = new window.Cashfree({ mode: "sandbox" }); // change later to production
-      cashfree.checkout({
-        paymentSessionId: data.payment_session_id,
-        redirectTarget: "_self",
+    try {
+      const res = await fetch("/api/createCashfreeOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          order_amount: parseFloat(amount),
+          customer_id: "cust_001",
+          customer_email: "test@example.com",
+          customer_phone: "9999999999",
+          order_note: `Add to wallet: ${amount}`,
+        }),
       });
-    } else {
-      alert("Order creation failed: " + (data.message || "Unknown error"));
-      console.error(data);
+
+      const data = await res.json();
+
+      if (data?.payment_session_id) {
+        const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
+
+        const cashfree = new window.Cashfree({ mode });
+
+        cashfree.checkout({
+          paymentSessionId: data.payment_session_id,
+          redirectTarget: "_self",
+        });
+      } else {
+        alert("Order creation failed: " + (data.message || "Unknown error"));
+        console.error("ORDER ERROR:", data);
+      }
+    } catch (err) {
+      alert("Error creating order");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    alert("Error creating order");
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <>

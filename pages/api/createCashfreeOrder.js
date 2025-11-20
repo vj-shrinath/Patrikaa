@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const orderId = "order_" + Date.now();
 
     // 🧩 Create order on Cashfree sandbox
-    const response = await fetch(`${CASHFREE_BASE_URL}/pg/orders`, { ... })
+    const response = await fetch("https://sandbox.cashfree.com/pg/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,3 +1,4 @@
+import { getAuth } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,8 @@ import { ArrowLeft, CreditCard, Loader2 } from "lucide-react";
 import Script from "next/script";
 
 export default function Checkout() {
+  const auth = getAuth();
+  const user = auth.currentUser;
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(10);
   const router = useRouter();
@@ -31,12 +34,12 @@ export default function Checkout() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          order_amount: parseFloat(amount),
-          customer_id: "cust_001",
-          customer_email: "test@example.com",
-          customer_phone: "9999999999",
-          order_note: `Add to wallet: ${amount}`,
-        }),
+  order_amount: parseFloat(amount),
+  customer_id: user.uid,             
+  customer_email: user.email,
+  customer_phone: user.phoneNumber || "9999999999",
+  order_note: `Add to wallet: ${amount}`,
+}),
       });
 
       const data = await res.json();

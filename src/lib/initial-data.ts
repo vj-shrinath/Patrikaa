@@ -20,19 +20,31 @@ export type InvitationData = {
   venueMapLink: string;
   schedule: ScheduleItem[];
   theme: string;
+<<<<<<< HEAD
   coupleImageUrl: string;
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
   suggestedMessage?: string;
   designAdjustments?: string;
 };
 
 
 export const initialData: InvitationData = {
+<<<<<<< HEAD
     brideName: "प्रेरणा शिंदे",
     brideFather: "राम शिंदे",
     brideMother: "आशा शिंदे",
     groomName: "सुमित जाधव",
     groomFather: "अजय जाधव",
     groomMother: "सीमा जाधव",
+=======
+    brideName: "प्रेरणा सिंह",
+    brideFather: "राम सिंह",
+    brideMother: "आशा सिंह",
+    groomName: "सुमित गुप्ता",
+    groomFather: "अजय गुप्ता",
+    groomMother: "सीमा गुप्ता",
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
     mainDate: "२६",
     mainDay: "रविवार",
     mainTime: "सायंकाळी ०६:१६ वाजता",
@@ -47,5 +59,8 @@ export const initialData: InvitationData = {
         { name: "स्वागत समारंभ", details: "शनिवार, २५ जुलै । सायं. ०७:०० वाजता" },
     ],
     theme: "default",
+<<<<<<< HEAD
     coupleImageUrl: "",
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 };

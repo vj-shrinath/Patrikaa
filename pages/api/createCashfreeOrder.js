@@ -1,7 +1,10 @@
 
+<<<<<<< HEAD
 import { config } from 'dotenv';
 config();
 
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 export default async function handler(req, res) {
   // Only allow POST requests
   if (req.method !== "POST") {
@@ -11,7 +14,11 @@ export default async function handler(req, res) {
   // Secure environment variables
   const CASHFREE_APP_ID = process.env.CASHFREE_APP_ID;
   const CASHFREE_SECRET_KEY = process.env.CASHFREE_SECRET_KEY;
+<<<<<<< HEAD
   const NEXT_PUBLIC_SITE_URL = process.env.APP_URL || process.env.NEXT_PUBLIC_SITE_URL;
+=======
+  const NEXT_PUBLIC_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
   if (!CASHFREE_APP_ID || !CASHFREE_SECRET_KEY || !NEXT_PUBLIC_SITE_URL) {
     console.error("❌ Missing Cashfree credentials or site URL in environment variables");
@@ -20,9 +27,15 @@ export default async function handler(req, res) {
 
   try {
     const orderId = "order_" + Date.now();
+<<<<<<< HEAD
 
     // 🧩 Create order on Cashfree production
     const response = await fetch("https://api.cashfree.com/pg/orders", {
+=======
+    const CASHFREE_BASE_URL = "https://api.cashfree.com";
+    // 🧩 Create order on Cashfree sandbox
+    const response = await fetch(`${CASHFREE_BASE_URL}/pg/orders`, {
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
       method: "POST",
       headers: {
         "Content-Type": "application/json",

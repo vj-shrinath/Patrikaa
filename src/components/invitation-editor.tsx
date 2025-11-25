@@ -249,7 +249,11 @@ export function InvitationEditor() {
         <InvitationCard data={invitationData} />
       )}
 
+<<<<<<< HEAD
       {!isEditing && <MusicToggle />}
+=======
+      <MusicToggle />
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
     </>
   );
 }

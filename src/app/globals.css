@@ -105,6 +105,7 @@
     --ring: 20 100% 75%;
   }
 
+<<<<<<< HEAD
   .theme-magenta-gold {
     --background: 335 55% 96%; /* Lighter magenta with paisley */
     --foreground: 335 81% 15%;
@@ -165,6 +166,8 @@
     --ring: 50 50% 75%;
   }
 
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
   .dark {
     --background: 333 10% 10%;
     --foreground: 60 50% 90%;
@@ -302,8 +305,11 @@
   border-radius: 50%;
   animation: sparkle-animation var(--animation-duration) linear infinite;
 }
+<<<<<<< HEAD
 
 .theme-magenta-gold {
     background-image: url('https://www.transparenttextures.com/patterns/paisley.png');
     background-color: hsl(var(--background));
 }
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f

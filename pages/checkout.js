@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
@@ -12,20 +15,30 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { initializeApp, getApps } from "firebase/app";
 import { firebaseConfig } from "@/firebase/config";
+<<<<<<< HEAD
 import { cn } from "@/lib/utils";
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
 // Initialize Firebase once
 if (!getApps().length) initializeApp(firebaseConfig);
 
 export default function Checkout() {
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
   const [amount, setAmount] = useState(50);
+=======
+  const [amount, setAmount] = useState(10);
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
   const [userData, setUserData] = useState(null);
   const router = useRouter();
 
   const { amount: queryAmount } = router.query;
+<<<<<<< HEAD
   const presetAmounts = [50, 100, 150, 200];
 
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
   // Load user details from Firebase Auth + Firestore
   useEffect(() => {
@@ -119,11 +132,16 @@ export default function Checkout() {
               Add Funds to Wallet
             </CardTitle>
 
+<<<<<<< HEAD
             <CardDescription>Select an amount or enter your own.</CardDescription>
+=======
+            <CardDescription>Enter the amount you wish to add.</CardDescription>
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
           </CardHeader>
 
           <CardContent>
             <form onSubmit={createOrder} className="space-y-6">
+<<<<<<< HEAD
               <div className="space-y-4">
                 <div className="grid grid-cols-4 gap-2">
                     {presetAmounts.map((preset) => (
@@ -163,6 +181,31 @@ export default function Checkout() {
               </div>
 
 
+=======
+              <div>
+                <Label htmlFor="amount">Amount (INR)</Label>
+                <div className="relative mt-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
+                  <Input
+                    type="number"
+                    id="amount"
+                    className="pl-7 h-11 text-base"
+                    placeholder="10.00"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    min="1"
+                    required
+                    disabled={!!queryAmount}
+                  />
+                </div>
+                {queryAmount && (
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    This amount is required to complete your previous action.
+                  </p>
+                )}
+              </div>
+
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
               <Button
                 type="submit"
                 disabled={loading || !amount || amount < 1}

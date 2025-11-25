@@ -35,6 +35,7 @@
       "description": "Bottom-right floral corner decoration.",
       "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDHnnv-MGi1XJfSHzvvY8aOdQNjgWMaKaz3EV5UFs3aGJf8a9D6GrI5vBlCFxceS_SW-0XFH4dL-XWDPYNZKA041jbbZ-k2XMkiHT12fnnTQZU4RHEHs7vl3VJ7lUFcwzGVSyqygGvzxfYa2Tt2dr8ffZ35hVV3UxpKkB-dpc52j6LVak3l35bcn2zgiI/s1005/Gemini_Generated_Image_6jdvc86jdvc86jdv.png",
       "imageHint": "floral corner"
+<<<<<<< HEAD
     },
     {
       "id": "magenta-top-border",
@@ -71,6 +72,8 @@
       "description": "Illustration of a Marathi wedding couple.",
       "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjRNvk32el4nXjvOIutCLdtDF-kOqSd3ldA-dwGSZ1727_gBQ2IWXPW5-W39SKlkNaIrMYRgGAhJa9EDlxKezGU964My9XMlTqfT2Z0q6_HmcDni8wXgO124Nd5LdJms9BO-bP9UN1cwKkXhxfR3HFbxXpgwNygclsXZnwVC9QgBTDc3-i0bcYwZHv-nZM/s5000/%E2%80%94Pngtree%E2%80%94indian%20wedding%20marathi%20couple%20standing_8837118.png",
       "imageHint": "wedding couple"
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
     }
   ]
 }

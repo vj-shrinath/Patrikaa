@@ -18,6 +18,7 @@ type InvitationCardProps = {
 export function InvitationCard({ data }: InvitationCardProps) {
   const containerRef = useScrollAnimation() as React.RefObject<HTMLDivElement>;
 
+<<<<<<< HEAD
   const ganeshaImage = PlaceHolderImages.find(img => img.id === 'ganesha-idol');
   const dholImage = PlaceHolderImages.find(img => img.id === 'dhol-shahnai');
   const darkGreenCorner = PlaceHolderImages.find(img => img.id === 'dark-green-corner');
@@ -26,10 +27,15 @@ export function InvitationCard({ data }: InvitationCardProps) {
   const coupleImageToShow = data.coupleImageUrl;
   const coupleImageHint = 'custom couple photo';
 
+=======
+  const dholImage = PlaceHolderImages.find(img => img.id === 'dhol-shahnai');
+  const ganeshaImage = PlaceHolderImages.find(img => img.id === 'ganesha-idol');
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
   return (
     <div ref={containerRef} className={cn("text-center font-body text-primary-foreground space-y-8", data.theme)}>
       {/* Page 1: Main Welcome */}
+<<<<<<< HEAD
       <section className="first-page fade-in-element relative">
         <div className="absolute left-0 bottom-5 z-20 md:ml-[203px]">
           {coupleImageToShow && (
@@ -55,6 +61,12 @@ export function InvitationCard({ data }: InvitationCardProps) {
           )}
           <Sparkles />
           <div className="relative z-10 flex flex-col items-center gap-4 text-primary-foreground">
+=======
+      <section className="first-page fade-in-element">
+        <div className="inner-card-solid w-[90vw] sm:w-full p-6 sm:p-10 flex flex-col justify-center">
+          <Sparkles />
+          <div className="flex flex-col items-center gap-4 text-primary-foreground">
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
             {ganeshaImage && (
                 <div className="mb-2">
                     <Image
@@ -77,7 +89,11 @@ export function InvitationCard({ data }: InvitationCardProps) {
                 </div>
 
                 <div className="px-4 pt-4 text-4xl font-normal text-accent">
+<<<<<<< HEAD
                     卐
+=======
+                    <SwastikIcon className="w-8 h-8" />
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
                 </div>
 
                 <div className="flex-1 px-2 text-left">
@@ -90,6 +106,7 @@ export function InvitationCard({ data }: InvitationCardProps) {
             <p className="text-lg">यांचा</p>
             <p className="text-5xl font-headline font-bold text-accent">शुभविवाह</p>
 
+<<<<<<< HEAD
             <div className="my-2 flex justify-center items-end gap-4">
               {dholImage && (
                 <div className="dhol-animate">
@@ -104,6 +121,21 @@ export function InvitationCard({ data }: InvitationCardProps) {
                 </div>
               )}
             </div>
+=======
+            {dholImage && (
+              <div className="my-2 dhol-animate">
+                <Image
+                  src={dholImage.imageUrl}
+                  alt={dholImage.description}
+                  width={150}
+                  height={75}
+                  className="mx-auto [filter:drop-shadow(0_10px_8px_rgba(0,0,0,0.25))]"
+                  data-ai-hint={dholImage.imageHint}
+                />
+              </div>
+            )}
+
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
             <div className="mt-4 text-center text-primary-foreground/80 animate-bounce">
                 <ArrowDown className="w-6 h-6 mx-auto" />
@@ -114,6 +146,7 @@ export function InvitationCard({ data }: InvitationCardProps) {
 
       {/* Page 2: Date and Time */}
       <section className="page fade-in-element p-8">
+<<<<<<< HEAD
         <div className="inner-card-solid w-[90vw] sm:w-full p-6 sm:p-8 relative overflow-hidden">
              {data.theme === 'theme-dark-green' && darkGreenCorner && (
                 <>
@@ -123,6 +156,9 @@ export function InvitationCard({ data }: InvitationCardProps) {
                   <Image src={darkGreenCorner.imageUrl} alt={darkGreenCorner.description} width={160} height={160} className="floral-corner bottom-0 right-0 transform scale-x-[-1] scale-y-[-1]" data-ai-hint={darkGreenCorner.imageHint} />
                 </>
              )}
+=======
+        <div className="inner-card-solid w-[90vw] sm:w-full p-6 sm:p-8">
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
             <Sparkles />
             <h2 className="text-3xl font-headline font-bold text-accent mb-4">दिनांक</h2>
             <div className="my-6">
@@ -150,6 +186,7 @@ export function InvitationCard({ data }: InvitationCardProps) {
 
       {/* Page 3: Schedule */}
       <section className="page fade-in-element p-8">
+<<<<<<< HEAD
         <div className="inner-card-solid w-[90vw] sm:w-full p-6 sm:p-8 relative overflow-hidden">
              {data.theme === 'theme-dark-green' && darkGreenCorner && (
                 <>
@@ -159,6 +196,9 @@ export function InvitationCard({ data }: InvitationCardProps) {
                   <Image src={darkGreenCorner.imageUrl} alt={darkGreenCorner.description} width={160} height={160} className="floral-corner bottom-0 right-0 transform scale-x-[-1] scale-y-[-1]" data-ai-hint={darkGreenCorner.imageHint} />
                 </>
              )}
+=======
+        <div className="inner-card-solid w-[90vw] sm:w-full p-6 sm:p-8">
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
           <Sparkles />
           <h2 className="text-3xl font-bold font-headline mb-8 text-accent">कार्यक्रमाची रूपरेषा</h2>
           <div className="space-y-6 w-full max-w-md mx-auto px-6 sm:px-0">
@@ -174,6 +214,7 @@ export function InvitationCard({ data }: InvitationCardProps) {
 
       {/* Page 4: Venue */}
       <section className="page fade-in-element p-8">
+<<<<<<< HEAD
         <div className="inner-card-solid w-[90vw] sm:w-full p-6 sm:p-8 relative overflow-hidden">
             {data.theme === 'theme-dark-green' && darkGreenCorner && (
                 <>
@@ -183,6 +224,9 @@ export function InvitationCard({ data }: InvitationCardProps) {
                   <Image src={darkGreenCorner.imageUrl} alt={darkGreenCorner.description} width={160} height={160} className="floral-corner bottom-0 right-0 transform scale-x-[-1] scale-y-[-1]" data-ai-hint={darkGreenCorner.imageHint} />
                 </>
             )}
+=======
+        <div className="inner-card-solid w-[90vw] sm:w-full p-6 sm:p-8">
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
           <Sparkles />
           <h2 className="text-3xl font-bold font-headline mb-8 text-accent">स्थळ</h2>
           <div className="flex flex-col items-center gap-4">

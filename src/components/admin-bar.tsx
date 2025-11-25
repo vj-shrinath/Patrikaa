@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 
 'use client';
 
 import { Button } from "@/components/ui/button";
 import { Loader2, Edit, Eye, Save, Copy, LogOut, LayoutDashboard, ArrowLeft } from "lucide-react";
+=======
+'use client';
+
+import { Button } from "@/components/ui/button";
+import { Loader2, Edit, Eye, Save, Copy, LogOut, LayoutDashboard } from "lucide-react";
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 import { useToast } from "@/hooks/use-toast";
 import { useUser, useAuth } from "@/firebase";
 import { useRouter } from "next/navigation";
@@ -62,6 +69,7 @@ export function AdminBar({
           Digital Invite
         </a>
         <div className="flex items-center gap-2 sm:gap-4">
+<<<<<<< HEAD
            {user && !isEditing && onToggle && (
             <Button onClick={onToggle} variant="outline" size="sm">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -70,6 +78,9 @@ export function AdminBar({
           )}
 
           {user && !isEditing && !onToggle && (
+=======
+          {user && !isEditing && (
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
             <Button onClick={() => router.push('/dashboard')} variant="outline" size="sm">
               <LayoutDashboard className="mr-2 h-4 w-4" />
               Dashboard

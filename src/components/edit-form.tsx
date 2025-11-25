@@ -5,7 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { InvitationData } from "@/lib/initial-data";
+<<<<<<< HEAD
 import { PlusCircle, Trash2, Wand2, Loader2, Palette, Image as ImageIcon } from "lucide-react";
+=======
+import { PlusCircle, Trash2, Wand2, Loader2, Palette } from "lucide-react";
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 import {
   Dialog,
   DialogContent,
@@ -29,9 +33,12 @@ const themes = [
     { name: "theme-royal-blue", label: "Royal Blue", primary: "hsl(221 83% 30%)", accent: "hsl(45 100% 70%)" },
     { name: "theme-emerald-green", label: "Emerald Green", primary: "hsl(145 63% 20%)", accent: "hsl(95 53% 70%)" },
     { name: "theme-ruby-red", label: "Ruby Red", primary: "hsl(350 70% 35%)", accent: "hsl(20 100% 75%)" },
+<<<<<<< HEAD
     { name: "theme-magenta-gold", label: "Vibrant Magenta", primary: "hsl(335 81% 32%)", accent: "hsl(45 86% 66%)" },
     { name: "theme-silver-moon", label: "Silver Moon", primary: "hsl(220 15% 25%)", accent: "hsl(210 30% 80%)" },
     { name: "theme-dark-green", label: "Dark Green", primary: "hsl(150 35% 30%)", accent: "hsl(50 50% 75%)" },
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 ];
 
 
@@ -39,7 +46,10 @@ export function EditForm({ data, setData }: EditFormProps) {
   const { toast } = useToast();
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<{ suggestedMessage: string; designAdjustments: string; } | null>(null);
+<<<<<<< HEAD
   const [imageUrl, setImageUrl] = useState(data.coupleImageUrl || "");
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -111,6 +121,7 @@ export function EditForm({ data, setData }: EditFormProps) {
       }
   };
 
+<<<<<<< HEAD
   const handleSetImage = () => {
     setData({ ...data, coupleImageUrl: imageUrl });
     toast({
@@ -127,6 +138,8 @@ export function EditForm({ data, setData }: EditFormProps) {
       description: "The custom image has been removed. The default will be shown.",
     });
   };
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
   return (
     <div className="container mx-auto max-w-3xl py-8 px-4 font-body">
@@ -152,6 +165,7 @@ export function EditForm({ data, setData }: EditFormProps) {
           </RadioGroup>
         </div>
 
+<<<<<<< HEAD
         {/* Main Photo */}
         <div className="p-6 border rounded-lg shadow-sm bg-card">
             <div className="flex items-center gap-4 mb-4">
@@ -168,6 +182,8 @@ export function EditForm({ data, setData }: EditFormProps) {
                 <p className="text-xs text-muted-foreground">तुमच्या जोडप्याच्या फोटोची URL येथे पेस्ट करा आणि 'Set Image' वर क्लिक करा. सर्वोत्तम परिणामांसाठी पारदर्शक पार्श्वभूमी असलेली प्रतिमा वापरा.</p>
             </div>
         </div>
+=======
+>>>>>>> dc8c8cad2180a258e377915c758104047d66109f
 
         {/* Main Details */}
         <div className="p-6 border rounded-lg shadow-sm bg-card">

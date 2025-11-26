@@ -1,0 +1,76 @@
+{
+  "placeholderImages": [
+    {
+      "id": "ganesha-idol",
+      "description": "Ganesha idol for the top of the invitation.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/a/AVvXsEg-4kN9cJe4yuFk7sBj4K0p3O-H3Ewc9X7ptjj4C63M2N2j3m8Y6_1aMydbD9prGfzXU8M3C999tfhbomQ6pgQBxjtDVYjgLV-rrWKXMDbWwH7Ueher8u5PMIzujA8YzOuzgc-ZjRuS6imatOHMIWNPuIw_ZKVW0y5LAb5-q5QjP2jJmx4hn3AAGEzYuKs",
+      "imageHint": "ganesha idol"
+    },
+    {
+      "id": "dhol-shahnai",
+      "description": "Dhol and Shahnai graphic.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/a/AVvXsEjw-g2Gm-RWWVg8AjzurND3F-9Ozh8SCfD6weP_Qk6p85BORrZXz6hO8j4r98gsB-1-6aKBlnEr3wQ0I6Lus4izhlhecA9SglZtAdMPLchHXkOzPkesXDBPxcV6iOUmwyZ44oek67PVd7GoWAVYOnCvReA7eBAQ2w0bIvFlzvZKLRb_qKyP3pr3TqEU808",
+      "imageHint": "dhol shahnai"
+    },
+    {
+      "id": "floral-corner-tl",
+      "description": "Top-left floral corner decoration.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDHnnv-MGi1XJfSHzvvY8aOdQNjgWMaKaz3EV5UFs3aGJf8a9D6GrI5vBlCFxceS_SW-0XFH4dL-XWDPYNZKA041jbbZ-k2XMkiHT12fnnTQZU4RHEHs7vl3VJ7lUFcwzGVSyqygGvzxfYa2Tt2dr8ffZ35hVV3UxpKkB-dpc52j6LVak3l35bcn2zgiI/s1005/Gemini_Generated_Image_6jdvc86jdvc86jdv.png",
+      "imageHint": "floral corner"
+    },
+    {
+      "id": "floral-corner-tr",
+      "description": "Top-right floral corner decoration.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDHnnv-MGi1XJfSHzvvY8aOdQNjgWMaKaz3EV5UFs3aGJf8a9D6GrI5vBlCFxceS_SW-0XFH4dL-XWDPYNZKA041jbbZ-k2XMkiHT12fnnTQZU4RHEHs7vl3VJ7lUFcwzGVSyqygGvzxfYa2Tt2dr8ffZ35hVV3UxpKkB-dpc52j6LVak3l35bcn2zgiI/s1005/Gemini_Generated_Image_6jdvc86jdvc86jdv.png",
+      "imageHint": "floral corner"
+    },
+    {
+      "id": "floral-corner-bl",
+      "description": "Bottom-left floral corner decoration.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDHnnv-MGi1XJfSHzvvY8aOdQNjgWMaKaz3EV5UFs3aGJf8a9D6GrI5vBlCFxceS_SW-0XFH4dL-XWDPYNZKA041jbbZ-k2XMkiHT12fnnTQZU4RHEHs7vl3VJ7lUFcwzGVSyqygGvzxfYa2Tt2dr8ffZ35hVV3UxpKkB-dpc52j6LVak3l35bcn2zgiI/s1005/Gemini_Generated_Image_6jdvc86jdvc86jdv.png",
+      "imageHint": "floral corner"
+    },
+    {
+      "id": "floral-corner-br",
+      "description": "Bottom-right floral corner decoration.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDHnnv-MGi1XJfSHzvvY8aOdQNjgWMaKaz3EV5UFs3aGJf8a9D6GrI5vBlCFxceS_SW-0XFH4dL-XWDPYNZKA041jbbZ-k2XMkiHT12fnnTQZU4RHEHs7vl3VJ7lUFcwzGVSyqygGvzxfYa2Tt2dr8ffZ35hVV3UxpKkB-dpc52j6LVak3l35bcn2zgiI/s1005/Gemini_Generated_Image_6jdvc86jdvc86jdv.png",
+      "imageHint": "floral corner"
+    },
+    {
+      "id": "magenta-top-border",
+      "description": "Top decorative border for magenta theme",
+      "imageUrl": "https://images.unsplash.com/photo-1481564253424-4da8bca76390?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxnb2xkJTIwb3JuYW1lbnR8ZW58MHx8fHwxNzYzNzAzOTc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gold ornament"
+    },
+    {
+      "id": "magenta-bottom-border",
+      "description": "Bottom decorative border for magenta theme",
+      "imageUrl": "https://images.unsplash.com/photo-1760542428790-1f4e4139190c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnb2xkJTIwb3JuYW1lbnR8ZW58MHx8fHwxNzYzNzAzOTc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gold ornament"
+    },
+    {
+      "id": "magenta-mandala",
+      "description": "Mandala design for magenta theme",
+      "imageUrl": "https://images.unsplash.com/photo-1622707835706-1dbc97022cf7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxnb2xkJTIwbWFuZGFsYXxlbnwwfHx8fDE3NjM3MDM5Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gold mandala"
+    },
+    {
+      "id": "dark-green-corner",
+      "description": "Golden mandala corner for dark green theme.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhW-B9X-7v3o5h3w6v7Y2z8B3f8e5n6c8a7Z1g6f8d3c2Z8Y5v7X3Z6B7c8a4d7g8e3B6f7D8c2Z4Y6v8X3Z6B7c8a4d7g8e3B6f7D8c2Z4Y6v8X3Z6B7c8a4d7g8e3B6f7D8c2Z4Y6v8X3/s400/golden-mandala-corner.png",
+      "imageHint": "gold mandala"
+    },
+    {
+      "id": "couple-photo",
+      "description": "A photo of the wedding couple.",
+      "imageUrl": "https://images.unsplash.com/photo-1725658860648-7b068f11a8e7?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "wedding couple"
+    },
+    {
+      "id": "marathi-couple",
+      "description": "Illustration of a Marathi wedding couple.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjRNvk32el4nXjvOIutCLdtDF-kOqSd3ldA-dwGSZ1727_gBQ2IWXPW5-W39SKlkNaIrMYRgGAhJa9EDlxKezGU964My9XMlTqfT2Z0q6_HmcDni8wXgO124Nd5LdJms9BO-bP9UN1cwKkXhxfR3HFbxXpgwNygclsXZnwVC9QgBTDc3-i0bcYwZHv-nZM/s5000/%E2%80%94Pngtree%E2%80%94indian%20wedding%20marathi%20couple%20standing_8837118.png",
+      "imageHint": "wedding couple"
+    }
+  ]
+}

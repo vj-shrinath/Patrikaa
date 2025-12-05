@@ -418,3 +418,21 @@
   left: -2.5rem !important;
   transform: rotate(0deg) !important;
 }
+
+/* Mobile Responsive Overrides */
+@media (max-width: 640px) {
+  .theme-autumn-floral .floral-accent {
+    width: 6rem !important;
+    height: 6rem !important;
+  }
+
+  .theme-royal-scroll .decorative-frame {
+    padding: 3rem 1.5rem !important;
+  }
+}
+
+
+/* Allow overflow for floral theme to show extending florals */
+.theme-autumn-floral .page, .theme-autumn-floral .first-page {
+  overflow: visible !important;
+}

@@ -2,9 +2,9 @@ import { cn } from "@/lib/utils";
 
 export function DecorativeFrame({ children, className }: { children: React.ReactNode, className?: string }) {
     return (
-        <div className={cn("relative p-8 md:p-12 border-2 border-accent/40 rounded-sm decorative-frame", className)}>
+        <div className={cn("relative p-4 sm:p-12 border-2 border-accent/40 rounded-sm decorative-frame", className)}>
             {/* Inner Border */}
-            <div className="absolute inset-2 border border-accent/20 rounded-sm pointer-events-none decorative-corner" />
+            <div className="absolute inset-2 border border-accent/20 rounded-sm pointer-events-none decorative-corner hidden sm:block" />
 
             {/* Top Left Corner */}
             <div className="absolute -top-1 -left-1 w-16 h-16 text-accent pointer-events-none decorative-corner">

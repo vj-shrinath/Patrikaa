@@ -14,7 +14,7 @@ const generateSparkle = () => {
     const delay = random(0, 3000);
 
     return {
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 9) + Date.now().toString(36),
         style: {
             '--tw-translate-x': translateX,
             '--tw-translate-y': translateY,

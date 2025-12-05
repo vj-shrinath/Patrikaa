@@ -27,14 +27,39 @@ export function AdminBar({
   const auth = useAuth();
   const router = useRouter();
 
-  const handleCopyLink = () => {
+  const handleCopyLink = async () => {
     if (!invitationId) return;
     const link = `${window.location.origin}/invitation/${invitationId}`;
-    navigator.clipboard.writeText(link);
-    toast({
-      title: "Link Copied!",
-      description: "The invitation link has been copied to your clipboard.",
-    });
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(link);
+      } else {
+        // Fallback for insecure contexts or where clipboard API is unavailable
+        const textArea = document.createElement("textarea");
+        textArea.value = link;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+
+      toast({
+        title: "Link Copied!",
+        description: "The invitation link has been copied to your clipboard.",
+      });
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+      toast({
+        title: "Copy Failed",
+        description: "Could not copy link to clipboard. Please copy it manually.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleLogout = () => {

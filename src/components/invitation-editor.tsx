@@ -311,8 +311,7 @@ export function InvitationEditor() {
         </div>
       ) : (
         <InvitationCard data={invitationData} />
-      )
-      }
+      )}
 
       {!isEditing && <MusicToggle />}
     </>

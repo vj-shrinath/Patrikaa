@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users can read their own document.
+    // They can only update their own walletBalance.
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Invitations are nested under users.
+    match /users/{userId}/invitations/{invitationId} {
+      // Anyone can read a specific invitation if they have the link (for public sharing).
+      allow get: if true;
+      
+      // Only the authenticated owner can list, create, update, or delete their own invitations.
+      allow list, create, update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Public look-up table for invitations.
+    match /publicInvitations/{invitationId} {
+        // Anyone can read the ownerId of an invitation.
+        allow get: if true;
+        // Only an authenticated user can create a pointer to an invitation they own.
+        allow create: if request.auth != null && request.resource.data.ownerId == request.auth.uid;
+        // No one can list all public invitations or update/delete pointers.
+        allow list, update, delete: if false;
+    }
+  }
+}

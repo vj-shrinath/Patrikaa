@@ -1,0 +1,107 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "type": "object",
+      "description": "Represents an application user.",
+      "properties": {
+        "uid": { "type": "string", "description": "The user's unique ID." },
+        "email": { "type": "string", "description": "The user's email." },
+        "walletBalance": { "type": "number", "description": "The user's wallet balance." },
+        "lastTopUp": { "type": "string", "format": "date-time", "description": "The last time the wallet was topped up."}
+      },
+      "required": ["uid", "email"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents the data that can be updated on a user profile.",
+      "properties": {
+        "walletBalance": { "type": "number", "description": "The user's wallet balance." },
+        "lastTopUp": { "type": "string", "format": "date-time", "description": "The last time the wallet was topped up."}
+      }
+    },
+    "Invitation": {
+      "title": "Invitation",
+      "type": "object",
+      "description": "Represents a wedding invitation.",
+      "properties": {
+        "brideName": { "type": "string" },
+        "brideFather": { "type": "string" },
+        "brideMother": { "type": "string" },
+        "groomName": { "type": "string" },
+        "groomFather": { "type": "string" },
+        "groomMother": { "type": "string" },
+        "mainDate": { "type": "string" },
+        "mainDay": { "type": "string" },
+        "mainTime": { "type": "string" },
+        "mainYear": { "type": "string" },
+        "venueName": { "type": "string" },
+        "venueCity": { "type": "string" },
+        "venueMapLink": { "type": "string", "format": "uri" },
+        "schedule": {
+          "type": "array",
+          "items": { "$ref": "#/entities/ScheduleItem" }
+        },
+        "theme": {
+          "type": "string",
+          "enum": ["default", "theme-royal-blue", "theme-emerald-green", "theme-ruby-red"],
+          "description": "The selected color theme for the invitation."
+        }
+      },
+      "required": [
+        "brideName", "groomName", "mainDate", "mainDay", "mainTime", 
+        "mainYear", "venueName", "venueCity", "theme"
+      ]
+    },
+    "ScheduleItem": {
+      "title": "ScheduleItem",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "details": { "type": "string" }
+      },
+      "required": ["name", "details"]
+    },
+    "PublicInvitation": {
+        "title": "PublicInvitation",
+        "type": "object",
+        "description": "A public pointer to an invitation, mapping an invitation ID to its owner's ID.",
+        "properties": {
+            "ownerId": { "type": "string" }
+        },
+        "required": ["ownerId"]
+    }
+  },
+  "auth": {
+    "providers": ["password"]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": { "$ref": "#/entities/User" },
+          "description": "Stores user profile data."
+        }
+      },
+      {
+        "path": "/users/{userId}/invitations/{invitationId}",
+        "definition": {
+          "entityName": "Invitation",
+          "schema": { "$ref": "#/entities/Invitation" },
+          "description": "Stores wedding invitations nested under the user who owns them."
+        }
+      },
+      {
+        "path": "/publicInvitations/{invitationId}",
+        "definition": {
+          "entityName": "PublicInvitation",
+          "schema": { "$ref": "#/entities/PublicInvitation" },
+          "description": "Stores a public mapping of invitation IDs to owner IDs to allow for public read access while data remains secure."
+        }
+      }
+    ]
+  }
+}

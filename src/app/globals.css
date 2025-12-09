@@ -417,7 +417,6 @@
   bottom: -2.5rem !important;
   left: -2.5rem !important;
   transform: rotate(0deg) !important;
-<<<<<<< HEAD
 }
 
 /* Mobile Responsive Overrides */
@@ -434,9 +433,7 @@
 
 
 /* Allow overflow for floral theme to show extending florals */
-.theme-autumn-floral .page, .theme-autumn-floral .first-page {
+.theme-autumn-floral .page,
+.theme-autumn-floral .first-page {
   overflow: visible !important;
 }
-=======
-}
->>>>>>> c0009e0a1c315588f7786e0af67a5e1231c8bf46

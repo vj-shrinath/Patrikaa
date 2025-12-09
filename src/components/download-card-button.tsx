@@ -29,10 +29,21 @@ export function DownloadCardButton({ targetId, fileName = "wedding-invitation" }
         setIsDownloading(true);
         try {
             // Options to ensure better quality and handling of web fonts
+            const onClone = (clonedNode: HTMLElement) => {
+                const fadeElements = clonedNode.querySelectorAll('.fade-in-element');
+                fadeElements.forEach((el) => {
+                    if (el instanceof HTMLElement) {
+                        el.style.opacity = '1';
+                        el.style.transform = 'none';
+                    }
+                });
+            };
+
             const dataUrl = await toPng(element, {
                 cacheBust: false, // cacheBust can cause CORS issues with some CDNs
                 pixelRatio: 2, // Higher resolution
                 skipAutoScale: true,
+                onClone: onClone as any,
             });
 
             const link = document.createElement('a');
@@ -50,11 +61,22 @@ export function DownloadCardButton({ targetId, fileName = "wedding-invitation" }
             // Retry with skipFonts as a fallback if it's a security/CORS error
             try {
                 console.log("Retrying with skipFonts...");
+                const onClone = (clonedNode: HTMLElement) => {
+                    const fadeElements = clonedNode.querySelectorAll('.fade-in-element');
+                    fadeElements.forEach((el) => {
+                        if (el instanceof HTMLElement) {
+                            el.style.opacity = '1';
+                            el.style.transform = 'none';
+                        }
+                    });
+                };
+
                 const dataUrl = await toPng(element, {
                     cacheBust: false,
                     pixelRatio: 2,
                     skipAutoScale: true,
                     skipFonts: true, // Fallback: Use system fonts
+                    onClone: onClone as any,
                 });
 
                 const link = document.createElement('a');

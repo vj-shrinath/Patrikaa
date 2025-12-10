@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Loader2, Edit, Eye, Save, Copy, LogOut, LayoutDashboard } from "lucide-react";
+import { Loader2, Edit, Eye, Save, Copy, LogOut, LayoutDashboard, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useUser, useAuth } from "@/firebase";
 import { useRouter } from "next/navigation";
@@ -86,56 +86,56 @@ export function AdminBar({
           Digital Invite
         </a>
         <div className="flex items-center gap-2 sm:gap-4">
-          {user && !isEditing && (
+          {user && (
             <Button onClick={() => router.push('/dashboard')} variant="outline" size="sm">
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              Dashboard
+              <LayoutDashboard className="mr-0 sm:mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Dashboard</span>
             </Button>
           )}
 
           {user && invitationId && (
             <Button onClick={handleCopyLink} variant="outline" size="sm">
-              <Copy className="mr-2 h-4 w-4" />
-              Copy Link
+              <Copy className="mr-0 sm:mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Copy Link</span>
             </Button>
           )}
 
           {user && isEditing && onToggle && (
             <Button onClick={onToggle} variant="outline" size="sm">
-              <Eye className="mr-2 h-4 w-4" />
-              Preview
+              <Eye className="mr-0 sm:mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Preview</span>
             </Button>
           )}
 
           {user && !isEditing && onToggle && (
             <Button onClick={onToggle} variant="outline" size="sm">
-              <Edit className="mr-2 h-4 w-4" />
-              Back to Edit
+              <ArrowLeft className="mr-0 sm:mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Back to Edit</span>
             </Button>
           )}
 
           {!user && !isUserLoading && (
             <Button onClick={handleEditClick} variant="outline" size="sm">
-              <Edit className="mr-2 h-4 w-4" />
-              Create / Edit
+              <Edit className="mr-0 sm:mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Create / Edit</span>
             </Button>
           )}
 
           {user && isEditing && onSave && (
             <Button onClick={onSave} disabled={isSaving} size="sm">
               {isSaving ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-0 sm:mr-2 h-4 w-4 animate-spin" />
               ) : (
-                <Save className="mr-2 h-4 w-4" />
+                <Save className="mr-0 sm:mr-2 h-4 w-4" />
               )}
-              {isSaving ? "Saving..." : "Save"}
+              <span className="hidden sm:inline">{isSaving ? "Saving..." : "Save"}</span>
             </Button>
           )}
 
           {user && (
             <Button onClick={handleLogout} variant="ghost" size="sm">
-              <LogOut className="mr-2 h-4 w-4" />
-              Logout
+              <LogOut className="mr-0 sm:mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           )}
         </div>

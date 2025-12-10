@@ -22,6 +22,8 @@ import { InvitationCard } from './invitation-card';
 import { EditForm } from './edit-form';
 import { MusicToggle } from './music-toggle';
 import { DownloadCardButton } from './download-card-button';
+import { ShareWhatsAppButton } from './share-whatsapp-button';
+import { ShareTextButton } from './share-text-button';
 
 import { Skeleton } from './ui/skeleton';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -232,15 +234,7 @@ export function InvitationEditor() {
     }
   }, [db, user, invitationData, invitationId, toast, router]);
 
-  const moveSection = (index: number, direction: 'up' | 'down') => {
-    const newOrder = [...(invitationData.sectionOrder || ['welcome', 'date', 'schedule', 'venue'])];
-    if (direction === 'up' && index > 0) {
-      [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
-    } else if (direction === 'down' && index < newOrder.length - 1) {
-      [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
-    }
-    setInvitationData({ ...invitationData, sectionOrder: newOrder });
-  };
+
 
   const [editorMode, setEditorMode] = useState<'content' | 'visual'>('content');
 
@@ -271,7 +265,7 @@ export function InvitationEditor() {
               variant={editorMode === 'visual' ? 'default' : 'outline'}
               onClick={() => setEditorMode('visual')}
             >
-              Visual Editor
+              Download & Share
             </Button>
           </div>
 
@@ -279,32 +273,19 @@ export function InvitationEditor() {
             <EditForm data={invitationData} setData={setInvitationData} />
           ) : (
             <div className="space-y-4">
-              <div className="p-4 bg-muted rounded-lg text-center text-muted-foreground mb-4">
-                <p>Reorder sections by using the Up and Down buttons.</p>
-              </div>
-
-              <div className="flex justify-end mb-4">
+              <div className="flex justify-end mb-4 gap-2 flex-wrap">
+                <ShareTextButton data={invitationData} invitationId={invitationId} />
+                <ShareWhatsAppButton
+                  targetId="invitation-card-preview"
+                  invitationId={invitationId}
+                  brideName={invitationData.brideName}
+                  groomName={invitationData.groomName}
+                />
                 <DownloadCardButton targetId="invitation-card-preview" fileName={`${invitationData.brideName}-${invitationData.groomName}-invite`} />
               </div>
 
-              {(invitationData.sectionOrder || ['welcome', 'date', 'schedule', 'venue']).map((section, index) => (
-                <div key={section} className="flex items-center justify-between p-4 border rounded-lg bg-card shadow-sm">
-                  <span className="font-semibold capitalize">{section} Section</span>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" onClick={() => moveSection(index, 'up')} disabled={index === 0}>
-                      Up
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => moveSection(index, 'down')} disabled={index === (invitationData.sectionOrder?.length || 4) - 1}>
-                      Down
-                    </Button>
-                  </div>
-                </div>
-              ))}
-              <div className="mt-8 border-t pt-8">
-                <h3 className="text-xl font-bold mb-4 text-center">Preview</h3>
-                <div id="invitation-card-preview">
-                  <InvitationCard data={invitationData} />
-                </div>
+              <div id="invitation-card-preview">
+                <InvitationCard data={invitationData} />
               </div>
             </div>
           )}

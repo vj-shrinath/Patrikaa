@@ -437,3 +437,9 @@
 .theme-autumn-floral .first-page {
   overflow: visible !important;
 }
+
+/* Force visibility in preview/capture mode to prevent blank downloads */
+#invitation-card-preview .fade-in-element {
+  opacity: 1 !important;
+  transform: none !important;
+}

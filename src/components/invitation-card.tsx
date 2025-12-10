@@ -32,7 +32,7 @@ export function InvitationCard({ data }: InvitationCardProps) {
   };
 
   return (
-    <div ref={containerRef} className={cn("text-center font-body text-primary-foreground relative flex flex-col", data.theme === 'theme-autumn-floral' ? 'gap-48' : 'gap-8', data.theme)}>
+    <div ref={containerRef} className={cn("text-center font-body text-primary-foreground relative flex flex-col bg-background", data.theme === 'theme-autumn-floral' ? 'gap-48' : 'gap-8', data.theme)}>
       {data.theme === 'theme-autumn-floral' && <FallingLeaves />}
       {order.map(section => renderSection(section))}
     </div>

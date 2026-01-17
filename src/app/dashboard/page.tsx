@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, updateDoc, Timestamp } from 'firebase/firestore';
 import { useFirestore, useUser, useCollection, useMemoFirebase, useDoc } from '@/firebase';
 import type { InvitationData } from '@/lib/initial-data';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 type UserProfile = {
-    walletBalance?: number;
+  walletBalance?: number;
 };
 
 function DashboardSkeleton() {
@@ -51,18 +51,18 @@ export default function DashboardPage() {
   const router = useRouter();
 
   const [dialogState, setDialogState] = useState<{
-      isOpen: boolean;
-      title: string;
-      description: string;
-      action?: () => void;
-      actionLabel: string;
-      isInsufficientFunds: boolean;
+    isOpen: boolean;
+    title: string;
+    description: string;
+    action?: () => void;
+    actionLabel: string;
+    isInsufficientFunds: boolean;
   }>({
-      isOpen: false,
-      title: '',
-      description: '',
-      actionLabel: '',
-      isInsufficientFunds: false,
+    isOpen: false,
+    title: '',
+    description: '',
+    actionLabel: '',
+    isInsufficientFunds: false,
   });
 
   const userProfileRef = useMemoFirebase(() => {
@@ -101,14 +101,14 @@ export default function DashboardPage() {
           // Optionally show a toast notification for the error
         });
     } else {
-       setDialogState({
-            isOpen: true,
-            title: 'Insufficient Funds',
-            description: `You need ₹${cost.toFixed(2)} but your wallet only has ₹${walletBalance.toFixed(2)}. Please add funds to continue.`,
-            action: () => router.push(`/checkout?amount=${cost}`),
-            actionLabel: 'Add Funds',
-            isInsufficientFunds: true,
-        });
+      setDialogState({
+        isOpen: true,
+        title: 'Insufficient Funds',
+        description: `You need ₹${cost.toFixed(2)} but your wallet only has ₹${walletBalance.toFixed(2)}. Please add funds to continue.`,
+        action: () => router.push(`/checkout?amount=${cost}`),
+        actionLabel: 'Add Funds',
+        isInsufficientFunds: true,
+      });
     }
   };
 
@@ -118,49 +118,77 @@ export default function DashboardPage() {
       router.push('/editor');
     } else {
       const cost = 150;
-       if (walletBalance < cost) {
-         setDialogState({
-            isOpen: true,
-            title: 'Insufficient Funds',
-            description: `Creating a new invitation costs ₹${cost.toFixed(2)}, but you only have ₹${walletBalance.toFixed(2)}. Please add funds.`,
-            action: () => router.push(`/checkout?amount=${cost}`),
-            actionLabel: 'Add Funds',
-            isInsufficientFunds: true,
-         });
-       } else {
-         setDialogState({
-            isOpen: true,
-            title: 'Create New Invitation',
-            description: `This will cost ₹${cost.toFixed(2)}. This amount will be deducted from your wallet.`,
-            action: () => handlePayment(cost, () => router.push('/editor')),
-            actionLabel: `Pay ₹${cost.toFixed(2)} & Create`,
-            isInsufficientFunds: false,
-         });
-       }
+      if (walletBalance < cost) {
+        setDialogState({
+          isOpen: true,
+          title: 'Insufficient Funds',
+          description: `Creating a new invitation costs ₹${cost.toFixed(2)}, but you only have ₹${walletBalance.toFixed(2)}. Please add funds.`,
+          action: () => router.push(`/checkout?amount=${cost}`),
+          actionLabel: 'Add Funds',
+          isInsufficientFunds: true,
+        });
+      } else {
+        setDialogState({
+          isOpen: true,
+          title: 'Create New Invitation',
+          description: `This will cost ₹${cost.toFixed(2)}. This amount will be deducted from your wallet.`,
+          action: () => handlePayment(cost, () => router.push('/editor')),
+          actionLabel: `Pay ₹${cost.toFixed(2)} & Create`,
+          isInsufficientFunds: false,
+        });
+      }
     }
   };
 
   const handleEditClick = (invitationId: string) => {
+    const invitation = invitations?.find(inv => inv.id === invitationId);
+
+    // Check if within free edit window
+    if (invitation?.editExpiryDate) {
+      const expiryDate = invitation.editExpiryDate instanceof Timestamp
+        ? invitation.editExpiryDate.toDate()
+        : new Date(invitation.editExpiryDate);
+
+      if (expiryDate > new Date()) {
+        // Valid subscription - Free edit
+        router.push(`/editor?id=${invitationId}`);
+        return;
+      }
+    }
+
     const cost = 50;
-     if (walletBalance < cost) {
-        setDialogState({
-            isOpen: true,
-            title: 'Insufficient Funds',
-            description: `Editing this invitation costs ₹${cost.toFixed(2)}, but you only have ₹${walletBalance.toFixed(2)}. Please add funds.`,
-            action: () => router.push(`/checkout?amount=${cost}`),
-            actionLabel: 'Add Funds',
-            isInsufficientFunds: true,
-        });
-     } else {
-        setDialogState({
-            isOpen: true,
-            title: 'Edit Invitation',
-            description: `Editing this invitation will cost ₹${cost.toFixed(2)}. This amount will be deducted from your wallet.`,
-            action: () => handlePayment(cost, () => router.push(`/editor?id=${invitationId}`)),
-            actionLabel: `Pay ₹${cost.toFixed(2)} & Edit`,
-            isInsufficientFunds: false,
-        });
-     }
+    if (walletBalance < cost) {
+      setDialogState({
+        isOpen: true,
+        title: 'Insufficient Funds',
+        description: `Editing this invitation costs ₹${cost.toFixed(2)}, but you only have ₹${walletBalance.toFixed(2)}. Please add funds.`,
+        action: () => router.push(`/checkout?amount=${cost}`),
+        actionLabel: 'Add Funds',
+        isInsufficientFunds: true,
+      });
+    } else {
+      setDialogState({
+        isOpen: true,
+        title: 'Edit Invitation',
+        description: `Editing this invitation will cost ₹${cost.toFixed(2)}. This amount will be deducted from your wallet. You will be able to edit this card for free for the next 24 hours.`,
+        action: () => handlePayment(cost, async () => {
+          // Update the invitation with new expiry date (24 hours from now)
+          const expiryDate = new Date();
+          expiryDate.setHours(expiryDate.getHours() + 24);
+
+          if (user?.uid) {
+            const invRef = doc(db, 'users', user.uid, 'invitations', invitationId);
+            await updateDoc(invRef, {
+              editExpiryDate: Timestamp.fromDate(expiryDate)
+            });
+          }
+
+          router.push(`/editor?id=${invitationId}`);
+        }),
+        actionLabel: `Pay ₹${cost.toFixed(2)} & Edit`,
+        isInsufficientFunds: false,
+      });
+    }
   };
 
   if (isUserLoading || isProfileLoading || !user) {
@@ -187,32 +215,32 @@ export default function DashboardPage() {
         </div>
 
         <Card className="mb-6">
-            <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                    <CardTitle className="text-xl font-headline text-primary flex items-center">
-                        <Wallet className="mr-2 h-6 w-6"/>
-                        My Wallet
-                    </CardTitle>
-                    <CardDescription>Your current balance for services.</CardDescription>
-                </div>
-                 <Button onClick={() => router.push('/checkout')}>
-                    Add Funds
-                </Button>
-            </CardHeader>
-            <CardContent>
-                <div className="flex items-center text-4xl font-bold text-primary">
-                    <IndianRupee className="h-8 w-8 mr-2"/>
-                    <span>{walletBalance.toFixed(2)}</span>
-                </div>
-            </CardContent>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="text-xl font-headline text-primary flex items-center">
+                <Wallet className="mr-2 h-6 w-6" />
+                My Wallet
+              </CardTitle>
+              <CardDescription>Your current balance for services.</CardDescription>
+            </div>
+            <Button onClick={() => router.push('/checkout')}>
+              Add Funds
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center text-4xl font-bold text-primary">
+              <IndianRupee className="h-8 w-8 mr-2" />
+              <span>{walletBalance.toFixed(2)}</span>
+            </div>
+          </CardContent>
         </Card>
 
 
         {isLoadingInvitations && (
-           <div className="flex items-center justify-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="ml-4 text-muted-foreground">Loading your invitations...</p>
-           </div>
+          <div className="flex items-center justify-center p-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="ml-4 text-muted-foreground">Loading your invitations...</p>
+          </div>
         )}
 
         {!isLoadingInvitations && invitations && invitations.length > 0 && (
@@ -225,12 +253,12 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-end gap-2">
-                     <Button variant="outline" size="sm" onClick={() => router.push(`/invitation/${inv.id}`)}>
-                        View
-                     </Button>
-                     <Button size="sm" onClick={() => handleEditClick(inv.id)}>
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit
+                    <Button variant="outline" size="sm" onClick={() => router.push(`/invitation/${inv.id}`)}>
+                      View
+                    </Button>
+                    <Button size="sm" onClick={() => handleEditClick(inv.id)}>
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit
                     </Button>
                   </div>
                 </CardContent>
@@ -240,34 +268,34 @@ export default function DashboardPage() {
         )}
 
         {!isLoadingInvitations && (!invitations || invitations.length === 0) && (
-           <div className="text-center py-16 border-2 border-dashed rounded-lg">
-                <div className="flex justify-center items-center mb-4">
-                  <Info className="h-8 w-8 text-primary"/>
-                </div>
-                <h3 className="text-xl font-semibold text-muted-foreground">Your First Invitation is Free!</h3>
-                <p className="text-muted-foreground mt-2 max-w-md mx-auto">Create your first beautiful digital invitation on us. Subsequent invitations will require a small fee.</p>
-                <Button onClick={handleCreateClick} className="mt-6">
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Create Your Free Invitation
-                </Button>
-           </div>
+          <div className="text-center py-16 border-2 border-dashed rounded-lg">
+            <div className="flex justify-center items-center mb-4">
+              <Info className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold text-muted-foreground">Your First Invitation is Free!</h3>
+            <p className="text-muted-foreground mt-2 max-w-md mx-auto">Create your first beautiful digital invitation on us. Subsequent invitations will require a small fee.</p>
+            <Button onClick={handleCreateClick} className="mt-6">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Create Your Free Invitation
+            </Button>
+          </div>
         )}
       </main>
-      <AlertDialog open={dialogState.isOpen} onOpenChange={(isOpen) => setDialogState(prev => ({...prev, isOpen}))}>
-          <AlertDialogContent>
-              <AlertDialogHeader>
-                  <AlertDialogTitle>{dialogState.title}</AlertDialogTitle>
-                  <AlertDialogDescription>
-                      {dialogState.description}
-                  </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={dialogState.action}>
-                      {dialogState.actionLabel}
-                  </AlertDialogAction>
-              </AlertDialogFooter>
-          </AlertDialogContent>
+      <AlertDialog open={dialogState.isOpen} onOpenChange={(isOpen) => setDialogState(prev => ({ ...prev, isOpen }))}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{dialogState.title}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {dialogState.description}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={dialogState.action}>
+              {dialogState.actionLabel}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
       </AlertDialog>
     </div>
   );

@@ -23,21 +23,23 @@ export type InvitationData = {
   suggestedMessage?: string;
   designAdjustments?: string;
   coupleImageUrl?: string;
+  ogImageUrl?: string;
   brideParentsDetails?: string;
   groomParentsDetails?: string;
   requestMessage?: string;
   sectionOrder?: string[];
   hostSide?: 'bride' | 'groom';
+  editExpiryDate?: any; // Using 'any' to accommodate both Firestore Timestamp and Date objects during transition
 };
 
 
 export const initialData: InvitationData = {
-  brideName: "प्रेरणा सिंह",
-  brideFather: "राम सिंह",
-  brideMother: "आशा सिंह",
-  groomName: "सुमित गुप्ता",
-  groomFather: "अजय गुप्ता",
-  groomMother: "सीमा गुप्ता",
+  brideName: "प्रेरणा पाटील",
+  brideFather: "राम पाटील",
+  brideMother: "आशा पाटील",
+  groomName: "सुमित पवार",
+  groomFather: "अजय पवार",
+  groomMother: "सीमा पवार",
   mainDate: "२६",
   mainDay: "रविवार",
   mainTime: "सायंकाळी ०६:१६ वाजता",
@@ -53,6 +55,7 @@ export const initialData: InvitationData = {
   ],
   theme: "default",
   coupleImageUrl: "",
+  ogImageUrl: "",
   sectionOrder: ['welcome', 'date', 'schedule', 'venue'],
   hostSide: 'bride',
 };

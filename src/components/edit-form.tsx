@@ -201,6 +201,16 @@ export function EditForm({ data, setData }: EditFormProps) {
           </div>
         </div>
 
+        {/* OG Image */}
+        <div className="p-6 border rounded-lg shadow-sm bg-card">
+          <h2 className="text-2xl font-headline font-bold text-primary mb-4">सोशल मीडिया शेअर इमेज</h2>
+          <div className="space-y-2">
+            <Label htmlFor="ogImageUrl">इमेजची लिंक (OG Image)</Label>
+            <Input id="ogImageUrl" name="ogImageUrl" value={data.ogImageUrl || ''} onChange={handleChange} placeholder="https://example.com/image.jpg" />
+            <p className="text-xs text-muted-foreground">व्हॉट्सअ‍ॅप किंवा फेसबुकवर लिंक शेअर करताना हा फोटो दिसेल. जर दिला नाही तर वरील 'जोडप्याचा फोटो' वापरला जाईल.</p>
+          </div>
+        </div>
+
         {/* Date and Time */}
         <div className="p-6 border rounded-lg shadow-sm bg-card">
           <h2 className="text-2xl font-headline font-bold text-primary mb-4">तारीख आणि वेळ</h2>

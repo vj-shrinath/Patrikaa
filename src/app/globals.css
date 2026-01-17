@@ -157,6 +157,16 @@
   }
 }
 
+@font-face {
+  font-family: 'CustomHeader';
+  src: url('/fonts/custom-header.ttf') format('truetype');
+  font-display: swap;
+}
+
+.font-custom-header {
+  font-family: 'CustomHeader', sans-serif;
+}
+
 @layer base {
   * {
     @apply border-border;

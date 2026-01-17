@@ -101,7 +101,7 @@ export function WelcomeSection({ data }: SectionProps) {
                                 </div>
 
                                 <p className="text-xl mt-6 font-serif text-primary-foreground/80">यांचा</p>
-                                <p className="text-4xl sm:text-6xl font-headline font-bold text-primary-foreground my-2">शुभविवाह</p>
+                                <p className="text-4xl sm:text-6xl font-custom-header text-primary-foreground my-2">{data.weddingHeader || "शुभविवाह"}</p>
                             </div>
                         </div>
 

@@ -223,6 +223,11 @@ export function EditForm({ data, setData }: EditFormProps) {
             </div>
           </div>
           <div className="mt-4 space-y-2">
+            <Label htmlFor="weddingHeader">लग्नाचे शीर्षक (उदा. शुभविवाह)</Label>
+            <Input id="weddingHeader" name="weddingHeader" value={data.weddingHeader || 'शुभविवाह'} onChange={handleChange} />
+            <p className="text-xs text-muted-foreground">जर तुम्ही AMS फॉन्ट वापरत असाल तर येथे AMS कोडिंग टाका.</p>
+          </div>
+          <div className="mt-4 space-y-2">
             <Label htmlFor="requestMessage">निमंत्रण संदेश</Label>
             <Textarea
               id="requestMessage"

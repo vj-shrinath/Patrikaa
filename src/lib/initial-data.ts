@@ -23,6 +23,7 @@ export type InvitationData = {
   suggestedMessage?: string;
   designAdjustments?: string;
   coupleImageUrl?: string;
+  weddingHeader?: string;
   brideParentsDetails?: string;
   groomParentsDetails?: string;
   requestMessage?: string;
@@ -54,6 +55,7 @@ export const initialData: InvitationData = {
   ],
   theme: "default",
   coupleImageUrl: "",
+  weddingHeader: "शुभविवाह",
   sectionOrder: ['welcome', 'date', 'schedule', 'venue'],
   hostSide: 'bride',
 };

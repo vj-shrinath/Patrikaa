@@ -26,6 +26,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { FontSelector } from "./font-selector";
+
 type EditFormProps = {
   data: InvitationData;
   setData: (data: InvitationData) => void;
@@ -45,6 +47,8 @@ export function EditForm({ data, setData }: EditFormProps) {
   const { toast } = useToast();
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<{ suggestedMessage: string; designAdjustments: string; } | null>(null);
+  const [newMediaType, setNewMediaType] = useState<'image' | 'video'>('image');
+  const [newMediaUrl, setNewMediaUrl] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -62,6 +66,36 @@ export function EditForm({ data, setData }: EditFormProps) {
     setData({ ...data, schedule: newSchedule });
   };
 
+  const handleFontChange = (field: string, fontValue: string) => {
+    setData({
+      ...data,
+      fonts: {
+        ...data.fonts,
+        [field]: fontValue
+      }
+    });
+  };
+
+  const handleBoldChange = (field: string, isBold: boolean) => {
+    setData({
+      ...data,
+      boldText: {
+        ...data.boldText,
+        [field]: isBold
+      }
+    });
+  };
+
+  const handleFontSizeChange = (field: string, size: string) => {
+    setData({
+      ...data,
+      fontSizes: {
+        ...data.fontSizes,
+        [field]: size
+      }
+    });
+  };
+
   const addScheduleItem = () => {
     setData({
       ...data,
@@ -72,6 +106,20 @@ export function EditForm({ data, setData }: EditFormProps) {
   const removeScheduleItem = (index: number) => {
     const newSchedule = data.schedule.filter((_, i) => i !== index);
     setData({ ...data, schedule: newSchedule });
+  };
+
+  const addGalleryItem = () => {
+    if (!newMediaUrl) return;
+    const newGallery = [...(data.gallery || [])];
+    newGallery.push({ type: newMediaType, url: newMediaUrl });
+    setData({ ...data, gallery: newGallery });
+    setNewMediaUrl('');
+  };
+
+  const removeGalleryItem = (index: number) => {
+    if (!data.gallery) return;
+    const newGallery = data.gallery.filter((_, i) => i !== index);
+    setData({ ...data, gallery: newGallery });
   };
 
   const handleAdaptContent = async () => {
@@ -118,7 +166,7 @@ export function EditForm({ data, setData }: EditFormProps) {
 
 
   return (
-    <div className="container mx-auto max-w-3xl py-8 px-4 font-body">
+    <div className="container mx-auto max-w-3xl py-8 px-4 font-body" >
       <div className="space-y-8">
 
         {/* Theme Selector */}
@@ -169,11 +217,35 @@ export function EditForm({ data, setData }: EditFormProps) {
               <div key={side} className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
                 <h3 className="font-semibold text-lg text-primary/90">{side === 'bride' ? 'वधू' : 'वर'}</h3>
                 <div className="space-y-2">
-                  <Label htmlFor={`${side}Name`}>{side === 'bride' ? 'वधूचे नाव' : 'वराचे नाव'}</Label>
+                  <div className="flex justify-between items-center flex-wrap gap-2">
+                    <Label htmlFor={`${side}Name`}>{side === 'bride' ? 'वधूचे नाव' : 'वराचे नाव'}</Label>
+                    <div className="w-auto">
+                      <FontSelector
+                        value={data.fonts?.[`${side}Name` as keyof typeof data.fonts] || 'font-headline'}
+                        onValueChange={(v) => handleFontChange(`${side}Name`, v)}
+                        bold={data.boldText?.[`${side}Name` as keyof typeof data.boldText] ?? true}
+                        onBoldChange={(b) => handleBoldChange(`${side}Name`, b)}
+                        size={data.fontSizes?.[`${side}Name` as keyof typeof data.fontSizes] || 'text-xl sm:text-3xl'}
+                        onSizeChange={(s) => handleFontSizeChange(`${side}Name`, s)}
+                      />
+                    </div>
+                  </div>
                   <Input id={`${side}Name`} name={`${side}Name`} value={side === 'bride' ? data.brideName : data.groomName} onChange={handleChange} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor={`${side}ParentsDetails`}>{side === 'bride' ? 'वधूचे पालक / तपशील' : 'वराचे पालक / तपशील'}</Label>
+                  <div className="flex justify-between items-center flex-wrap gap-2">
+                    <Label htmlFor={`${side}ParentsDetails`}>{side === 'bride' ? 'वधूचे पालक / तपशील' : 'वराचे पालक / तपशील'}</Label>
+                    <div className="w-auto">
+                      <FontSelector
+                        value={data.fonts?.[`${side}Parents` as keyof typeof data.fonts] || 'font-body'}
+                        onValueChange={(v) => handleFontChange(`${side}Parents`, v)}
+                        bold={data.boldText?.[`${side}Parents` as keyof typeof data.boldText] ?? false}
+                        onBoldChange={(b) => handleBoldChange(`${side}Parents`, b)}
+                        size={data.fontSizes?.[`${side}Parents` as keyof typeof data.fontSizes] || 'text-xs'}
+                        onSizeChange={(s) => handleFontSizeChange(`${side}Parents`, s)}
+                      />
+                    </div>
+                  </div>
                   <Input
                     id={`${side}ParentsDetails`}
                     name={`${side}ParentsDetails`}
@@ -192,12 +264,74 @@ export function EditForm({ data, setData }: EditFormProps) {
         </div>
 
         {/* Images */}
+        {/* Images/Gallery */}
         <div className="p-6 border rounded-lg shadow-sm bg-card">
-          <h2 className="text-2xl font-headline font-bold text-primary mb-4">फोटो</h2>
-          <div className="space-y-2">
-            <Label htmlFor="coupleImageUrl">जोडप्याचा फोटो (लिंक)</Label>
-            <Input id="coupleImageUrl" name="coupleImageUrl" value={data.coupleImageUrl || ''} onChange={handleChange} placeholder="https://example.com/image.jpg" />
-            <p className="text-xs text-muted-foreground">येथे तुमच्या फोटोची लिंक टाका. हा फोटो ढोल-शहनाईच्या डाव्या बाजूला दिसेल.</p>
+          <h2 className="text-2xl font-headline font-bold text-primary mb-4">फोटो आणि व्हिडिओ गॅलरी</h2>
+
+          {/* Legacy single image support - optional, or we can just migrate visualy */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>नवीन मीडिया जोडा</Label>
+              <div className="flex gap-2">
+                <Select value={newMediaType} onValueChange={(v: 'image' | 'video') => setNewMediaType(v)}>
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="image">फोटो</SelectItem>
+                    <SelectItem value="video">व्हिडिओ</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Input
+                  value={newMediaUrl}
+                  onChange={(e) => setNewMediaUrl(e.target.value)}
+                  placeholder={newMediaType === 'image' ? "Image URL" : "Video URL"}
+                  className="flex-grow"
+                />
+                <Button onClick={addGalleryItem} type="button">Add</Button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+              {/* Show legacy coupleImageUrl if it exists and gallery is empty - strictly for migration visualization, 
+                     but best to encourage adding to gallery. We will just show gallery here. */}
+              {data.gallery && data.gallery.map((item, index) => (
+                <div key={index} className="relative group border rounded-lg overflow-hidden aspect-[3/4] bg-muted">
+                  {item.type === 'video' ? (
+                    <div className="w-full h-full flex items-center justify-center bg-black/10">
+                      <span className="text-xs font-mono">Video</span>
+                    </div>
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.url} alt="" className="w-full h-full object-cover" />
+                  )}
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                    onClick={() => removeGalleryItem(index)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 truncate px-2">
+                    {item.url}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {(!data.gallery || data.gallery.length === 0) && data.coupleImageUrl && (
+              <div className="mt-4 p-4 border border-yellow-200 bg-yellow-50 rounded-md">
+                <p className="text-sm text-yellow-800">
+                  Note: You representatively have a single "Couple Image" set. Add items to the gallery above to upgrade to the new scrolling view.
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={data.coupleImageUrl} alt="" className="w-16 h-16 object-cover rounded" />
+                  <span className="text-xs text-muted-foreground truncate">{data.coupleImageUrl}</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -214,6 +348,10 @@ export function EditForm({ data, setData }: EditFormProps) {
               <Input id="mainDay" name="mainDay" value={data.mainDay} onChange={handleChange} />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="mainMonth">महिना</Label>
+              <Input id="mainMonth" name="mainMonth" value={data.mainMonth || ''} onChange={handleChange} placeholder="जुलै" />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="mainTime">वेळ</Label>
               <Input id="mainTime" name="mainTime" value={data.mainTime} onChange={handleChange} />
             </div>
@@ -223,12 +361,51 @@ export function EditForm({ data, setData }: EditFormProps) {
             </div>
           </div>
           <div className="mt-4 space-y-2">
-            <Label htmlFor="weddingHeader">लग्नाचे शीर्षक (उदा. शुभविवाह)</Label>
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>शुभ मुहूर्त शीर्षक फॉन्ट</Label>
+              <div className="w-auto">
+                <FontSelector
+                  value={data.fonts?.shubhMuhhurt || 'font-headline'}
+                  onValueChange={(v) => handleFontChange('shubhMuhhurt', v)}
+                  bold={data.boldText?.shubhMuhhurt ?? true}
+                  onBoldChange={(b) => handleBoldChange('shubhMuhhurt', b)}
+                  size={data.fontSizes?.shubhMuhhurt || 'text-2xl sm:text-4xl'}
+                  onSizeChange={(s) => handleFontSizeChange('shubhMuhhurt', s)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 space-y-2">
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label htmlFor="weddingHeader">लग्नाचे शीर्षक (उदा. शुभविवाह)</Label>
+              <div className="w-auto">
+                <FontSelector
+                  value={data.fonts?.weddingHeader || 'font-custom-header'}
+                  onValueChange={(v) => handleFontChange('weddingHeader', v)}
+                  bold={data.boldText?.weddingHeader ?? false}
+                  onBoldChange={(b) => handleBoldChange('weddingHeader', b)}
+                  size={data.fontSizes?.weddingHeader || 'text-4xl sm:text-6xl'}
+                  onSizeChange={(s) => handleFontSizeChange('weddingHeader', s)}
+                />
+              </div>
+            </div>
             <Input id="weddingHeader" name="weddingHeader" value={data.weddingHeader || 'शुभविवाह'} onChange={handleChange} />
             <p className="text-xs text-muted-foreground">जर तुम्ही AMS फॉन्ट वापरत असाल तर येथे AMS कोडिंग टाका.</p>
           </div>
           <div className="mt-4 space-y-2">
-            <Label htmlFor="requestMessage">निमंत्रण संदेश</Label>
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label htmlFor="requestMessage">निमंत्रण संदेश</Label>
+              <div className="w-auto">
+                <FontSelector
+                  value={data.fonts?.requestMessage || 'font-body'}
+                  onValueChange={(v) => handleFontChange('requestMessage', v)}
+                  bold={data.boldText?.requestMessage ?? false}
+                  onBoldChange={(b) => handleBoldChange('requestMessage', b)}
+                  size={data.fontSizes?.requestMessage || 'text-lg'}
+                  onSizeChange={(s) => handleFontSizeChange('requestMessage', s)}
+                />
+              </div>
+            </div>
             <Textarea
               id="requestMessage"
               name="requestMessage"
@@ -267,7 +444,19 @@ export function EditForm({ data, setData }: EditFormProps) {
           <h2 className="text-2xl font-headline font-bold text-primary mb-4">स्थळ</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="venueName">स्थळाचे नाव</Label>
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <Label htmlFor="venueName">स्थळाचे नाव</Label>
+                <div className="w-auto">
+                  <FontSelector
+                    value={data.fonts?.place || 'font-headline'}
+                    onValueChange={(v) => handleFontChange('place', v)}
+                    bold={data.boldText?.place ?? true}
+                    onBoldChange={(b) => handleBoldChange('place', b)}
+                    size={data.fontSizes?.place || 'text-2xl sm:text-5xl'}
+                    onSizeChange={(s) => handleFontSizeChange('place', s)}
+                  />
+                </div>
+              </div>
               <Input id="venueName" name="venueName" value={data.venueName} onChange={handleChange} />
             </div>
             <div className="space-y-2">
@@ -327,7 +516,8 @@ export function EditForm({ data, setData }: EditFormProps) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }

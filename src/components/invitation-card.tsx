@@ -3,7 +3,7 @@
 import type { InvitationData } from "@/lib/initial-data";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { cn } from "@/lib/utils";
-import { WelcomeSection, DateSection, ScheduleSection, VenueSection } from "./sections";
+import { WelcomeSection, DateSection, ScheduleSection, VenueSection, CoupleSection } from "./sections";
 import { FallingLeaves } from "./falling-leaves";
 
 type InvitationCardProps = {
@@ -14,12 +14,14 @@ export function InvitationCard({ data }: InvitationCardProps) {
   const containerRef = useScrollAnimation() as React.RefObject<HTMLDivElement>;
 
   // Default order if not provided
-  const order = data.sectionOrder || ['welcome', 'date', 'schedule', 'venue'];
+  const order = data.sectionOrder || ['welcome', 'couple', 'date', 'schedule', 'venue'];
 
   const renderSection = (section: string) => {
     switch (section) {
       case 'welcome':
         return <WelcomeSection key="welcome" data={data} />;
+      case 'couple':
+        return <CoupleSection key="couple" data={data} />;
       case 'date':
         return <DateSection key="date" data={data} />;
       case 'schedule':
@@ -32,7 +34,7 @@ export function InvitationCard({ data }: InvitationCardProps) {
   };
 
   return (
-    <div ref={containerRef} className={cn("text-center font-body text-primary-foreground relative flex flex-col bg-background", data.theme === 'theme-autumn-floral' ? 'gap-48' : 'gap-8', data.theme)}>
+    <div ref={containerRef} className={cn("text-center font-body text-primary-foreground relative flex flex-col bg-background gap-2 sm:gap-4", data.theme)}>
       {data.theme === 'theme-autumn-floral' && <FallingLeaves />}
       {order.map(section => renderSection(section))}
     </div>

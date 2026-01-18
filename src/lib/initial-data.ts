@@ -12,6 +12,7 @@ export type InvitationData = {
   groomFather: string;
   groomMother: string;
   mainDate: string;
+  mainMonth: string;
   mainDay: string;
   mainTime: string;
   mainYear: string;
@@ -23,6 +24,10 @@ export type InvitationData = {
   suggestedMessage?: string;
   designAdjustments?: string;
   coupleImageUrl?: string;
+  gallery?: {
+    type: 'image' | 'video';
+    url: string;
+  }[];
   weddingHeader?: string;
   brideParentsDetails?: string;
   groomParentsDetails?: string;
@@ -30,17 +35,52 @@ export type InvitationData = {
   sectionOrder?: string[];
   hostSide?: 'bride' | 'groom';
   editExpiryDate?: any; // Using 'any' to accommodate both Firestore Timestamp and Date objects during transition
+  fonts?: {
+    brideName?: string;
+    groomName?: string;
+    brideParents?: string;
+    groomParents?: string;
+    weddingHeader?: string;
+    requestMessage?: string;
+    date?: string;
+    place?: string;
+    shubhMuhhurt?: string;
+    general?: string;
+  };
+  boldText?: {
+    brideName?: boolean;
+    groomName?: boolean;
+    brideParents?: boolean;
+    groomParents?: boolean;
+    weddingHeader?: boolean;
+    requestMessage?: boolean;
+    place?: boolean;
+    shubhMuhhurt?: boolean;
+    general?: boolean;
+  };
+  fontSizes?: {
+    brideName?: string;
+    groomName?: string;
+    brideParents?: string;
+    groomParents?: string;
+    weddingHeader?: string;
+    requestMessage?: string;
+    place?: string;
+    shubhMuhhurt?: string;
+    general?: string;
+  };
 };
 
 
 export const initialData: InvitationData = {
-  brideName: "प्रेरणा पाटील",
+  brideName: "प्रीती",
   brideFather: "राम पाटील",
   brideMother: "आशा पाटील",
-  groomName: "सुमित पवार",
+  groomName: "आदित्य",
   groomFather: "अजय पवार",
   groomMother: "सीमा पवार",
   mainDate: "२६",
+  mainMonth: "जुलै",
   mainDay: "रविवार",
   mainTime: "सायंकाळी ०६:१६ वाजता",
   mainYear: "२०२६",
@@ -55,7 +95,40 @@ export const initialData: InvitationData = {
   ],
   theme: "default",
   coupleImageUrl: "",
+  gallery: [],
   weddingHeader: "शुभविवाह",
-  sectionOrder: ['welcome', 'date', 'schedule', 'venue'],
+  sectionOrder: ['welcome', 'couple', 'date', 'schedule', 'venue'],
   hostSide: 'bride',
+  fonts: {
+    brideName: "font-headline",
+    groomName: "font-headline",
+    brideParents: "font-body",
+    groomParents: "font-body",
+    weddingHeader: "font-custom-header",
+    requestMessage: "font-body",
+    date: "font-headline",
+    place: "font-headline",
+    shubhMuhhurt: "font-headline",
+    general: "font-body",
+  },
+  boldText: {
+    brideName: true,
+    groomName: true,
+    brideParents: false,
+    groomParents: false,
+    weddingHeader: false,
+    requestMessage: false,
+    place: true,
+    shubhMuhhurt: true,
+  },
+  fontSizes: {
+    brideName: "text-xl sm:text-3xl",
+    groomName: "text-xl sm:text-3xl",
+    brideParents: "text-xs",
+    groomParents: "text-xs",
+    weddingHeader: "text-4xl sm:text-6xl",
+    requestMessage: "text-lg",
+    place: "text-2xl sm:text-5xl",
+    shubhMuhhurt: "text-2xl sm:text-4xl",
+  }
 };

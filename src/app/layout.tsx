@@ -20,7 +20,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Gotu&family=Laila:wght@300..700&family=Modak&family=Mukta:wght@200..800&family=Rozha+One&family=Sahitya:wght@400;700&family=Tiro+Devanagari+Marathi:ital@0;1&family=Yatra+One&display=swap" rel="stylesheet" crossOrigin="anonymous" />
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen">
         <FirebaseClientProvider>

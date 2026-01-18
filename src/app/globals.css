@@ -178,7 +178,7 @@
 }
 
 .first-page {
-  @apply relative w-full min-h-screen p-2 flex flex-col items-center justify-center overflow-hidden sm:p-8;
+  @apply relative w-full p-2 flex flex-col items-center justify-center overflow-hidden sm:p-8 sm:min-h-screen;
 }
 
 .page {
@@ -449,7 +449,78 @@
 }
 
 /* Force visibility in preview/capture mode to prevent blank downloads */
-#invitation-card-preview .fade-in-element {
-  opacity: 1 !important;
-  transform: none !important;
+
+/* Premium Photo Effects */
+.premium-photo-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.premium-photo-frame::before {
+  content: '';
+  position: absolute;
+  inset: -15px;
+  background: linear-gradient(45deg, hsl(var(--accent)/0.3), transparent 40%, transparent 60%, hsl(var(--primary)/0.3));
+  border-radius: 20px;
+  z-index: -1;
+  animation: photo-glow 3s ease-in-out infinite alternate;
+}
+
+.premium-photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 2px solid hsl(var(--accent));
+  border-radius: 16px;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 0 15px hsl(var(--accent)/0.2);
+}
+
+.premium-photo-inner {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.premium-photo-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes photo-glow {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+.floating-element {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }

@@ -1,5 +1,5 @@
-import type {Config} from 'tailwindcss';
-import {fontFamily} from 'tailwindcss/defaultTheme';
+import type { Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 
 export default {
@@ -14,9 +14,16 @@ export default {
       fontFamily: {
         sans: ['"Tiro Devanagari Marathi"', ...fontFamily.sans],
         serif: ['"Tiro Devanagari Marathi"', ...fontFamily.serif],
-        body: ['"Tiro Devanagari Marathi"', 'serif'], // <- We'll use this one (font-body)
-       
+        body: ['"Tiro Devanagari Marathi"', 'serif'],
         headline: ['"Tiro Devanagari Marathi"', 'serif'],
+        mukta: ['"Mukta"', 'sans-serif'],
+        baloo: ['"Baloo 2"', 'sans-serif'],
+        rozha: ['"Rozha One"', 'serif'],
+        gotu: ['"Gotu"', 'sans-serif'],
+        modak: ['"Modak"', 'display'],
+        laila: ['"Laila"', 'sans-serif'],
+        sahitya: ['"Sahitya"', 'serif'],
+        yatra: ['"Yatra One"', 'display'],
         code: ['monospace'],
       },
       colors: {

@@ -35,6 +35,7 @@ export type InvitationData = {
   sectionOrder?: string[];
   hostSide?: 'bride' | 'groom';
   editExpiryDate?: any; // Using 'any' to accommodate both Firestore Timestamp and Date objects during transition
+  scheduleSectionTitle?: string;
   fonts?: {
     brideName?: string;
     groomName?: string;
@@ -46,6 +47,15 @@ export type InvitationData = {
     place?: string;
     shubhMuhhurt?: string;
     general?: string;
+    scheduleName?: string;
+    scheduleDetails?: string;
+    scheduleSectionTitle?: string;
+    mainDate?: string;
+    mainMonth?: string;
+    mainTime?: string;
+    mainYear?: string;
+    mainDay?: string;
+    venueCity?: string;
   };
   boldText?: {
     brideName?: boolean;
@@ -57,6 +67,15 @@ export type InvitationData = {
     place?: boolean;
     shubhMuhhurt?: boolean;
     general?: boolean;
+    scheduleName?: boolean;
+    scheduleDetails?: boolean;
+    scheduleSectionTitle?: boolean;
+    mainDate?: boolean;
+    mainMonth?: boolean;
+    mainTime?: boolean;
+    mainYear?: boolean;
+    mainDay?: boolean;
+    venueCity?: boolean;
   };
   fontSizes?: {
     brideName?: string;
@@ -68,6 +87,43 @@ export type InvitationData = {
     place?: string;
     shubhMuhhurt?: string;
     general?: string;
+    scheduleName?: string;
+    scheduleDetails?: string;
+    scheduleSectionTitle?: string;
+    mainDate?: string;
+    mainMonth?: string;
+    mainTime?: string;
+    mainYear?: string;
+    mainDay?: string;
+    venueCity?: string;
+  };
+  colors?: {
+    brideName?: string;
+    groomName?: string;
+    brideParents?: string;
+    groomParents?: string;
+    weddingHeader?: string;
+    requestMessage?: string;
+    place?: string;
+    shubhMuhhurt?: string;
+    general?: string;
+    scheduleName?: string;
+    scheduleDetails?: string;
+    scheduleSectionTitle?: string;
+    mainDate?: string;
+    mainMonth?: string;
+    mainTime?: string;
+    mainYear?: string;
+    mainDay?: string;
+    venueCity?: string;
+  };
+  topBanner?: {
+    enabled: boolean;
+    text: string;
+    font?: string;
+    bold?: boolean;
+    fontSize?: string;
+    color?: string;
   };
 };
 
@@ -99,6 +155,7 @@ export const initialData: InvitationData = {
   weddingHeader: "शुभविवाह",
   sectionOrder: ['welcome', 'couple', 'date', 'schedule', 'venue'],
   hostSide: 'bride',
+  scheduleSectionTitle: "कार्यक्रम",
   fonts: {
     brideName: "font-headline",
     groomName: "font-headline",
@@ -110,6 +167,15 @@ export const initialData: InvitationData = {
     place: "font-headline",
     shubhMuhhurt: "font-headline",
     general: "font-body",
+    scheduleName: "font-headline",
+    scheduleDetails: "font-serif",
+    scheduleSectionTitle: "font-headline",
+    mainDate: "font-headline",
+    mainMonth: "font-body",
+    mainTime: "font-body",
+    mainYear: "font-body",
+    mainDay: "font-serif",
+    venueCity: "font-body",
   },
   boldText: {
     brideName: true,
@@ -120,6 +186,15 @@ export const initialData: InvitationData = {
     requestMessage: false,
     place: true,
     shubhMuhhurt: true,
+    scheduleName: true,
+    scheduleDetails: false,
+    scheduleSectionTitle: true,
+    mainDate: true,
+    mainMonth: false,
+    mainTime: false,
+    mainYear: true,
+    mainDay: false,
+    venueCity: false,
   },
   fontSizes: {
     brideName: "text-xl sm:text-3xl",
@@ -130,5 +205,41 @@ export const initialData: InvitationData = {
     requestMessage: "text-lg",
     place: "text-2xl sm:text-5xl",
     shubhMuhhurt: "text-2xl sm:text-4xl",
+    scheduleName: "text-xl sm:text-3xl",
+    scheduleDetails: "text-xl",
+    scheduleSectionTitle: "text-2xl sm:text-4xl",
+    mainDate: "text-6xl sm:text-9xl",
+    mainMonth: "text-xl",
+    mainTime: "text-xl",
+    mainYear: "text-5xl",
+    mainDay: "text-2xl",
+    venueCity: "text-xl sm:text-3xl",
+  },
+  colors: {
+    brideName: "",
+    groomName: "",
+    brideParents: "",
+    groomParents: "",
+    weddingHeader: "",
+    requestMessage: "",
+    place: "",
+    shubhMuhhurt: "",
+    scheduleName: "",
+    scheduleDetails: "",
+    scheduleSectionTitle: "",
+    mainDate: "",
+    mainMonth: "",
+    mainTime: "",
+    mainYear: "",
+    mainDay: "",
+    venueCity: "",
+  },
+  topBanner: {
+    enabled: false,
+    text: "You are specially invited",
+    font: "font-headline",
+    bold: true,
+    fontSize: "text-xs sm:text-sm",
+    color: "#ffffff"
   }
 };

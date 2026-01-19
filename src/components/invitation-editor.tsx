@@ -110,7 +110,8 @@ export function InvitationEditor() {
       (snapshot) => {
         if (!snapshot.empty) {
           const doc = snapshot.docs[0];
-          setInvitationData(doc.data() as InvitationData);
+          // Merge with initialData to ensure new fields (like topBanner) are present even in old documents
+          setInvitationData({ ...initialData, ...doc.data() } as InvitationData);
           setInvitationId(doc.id);
         } else {
           toast({

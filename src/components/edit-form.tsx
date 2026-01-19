@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { InvitationData } from "@/lib/initial-data";
-import { PlusCircle, Trash2, Wand2, Loader2, Palette } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { PlusCircle, Trash2, Wand2, Loader2, Palette, Star } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -96,6 +97,16 @@ export function EditForm({ data, setData }: EditFormProps) {
     });
   };
 
+  const handleColorChange = (field: string, color: string) => {
+    setData({
+      ...data,
+      colors: {
+        ...data.colors,
+        [field]: color
+      }
+    });
+  };
+
   const addScheduleItem = () => {
     setData({
       ...data,
@@ -165,6 +176,67 @@ export function EditForm({ data, setData }: EditFormProps) {
   };
 
 
+  const handleTopBannerChange = (checked: boolean) => {
+    setData({
+      ...data,
+      topBanner: {
+        text: data.topBanner?.text || "You are specially invited",
+        enabled: checked,
+      }
+    });
+  };
+
+  const handleTopBannerTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({
+      ...data,
+      topBanner: {
+        enabled: data.topBanner?.enabled || false,
+        text: e.target.value
+      }
+    });
+  };
+
+  const handleTopBannerFontChange = (fontValue: string) => {
+    setData({
+      ...data,
+      topBanner: {
+        ...data.topBanner!,
+        font: fontValue
+      }
+    });
+  };
+
+  const handleTopBannerBoldChange = (isBold: boolean) => {
+    setData({
+      ...data,
+      topBanner: {
+        ...data.topBanner!,
+        bold: isBold
+      }
+    });
+  };
+
+  const handleTopBannerFontSizeChange = (size: string) => {
+    setData({
+      ...data,
+      topBanner: {
+        ...data.topBanner!,
+        fontSize: size
+      }
+    });
+  };
+
+  const handleTopBannerColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({
+      ...data,
+      topBanner: {
+        ...data.topBanner!,
+        color: e.target.value
+      }
+    });
+  };
+
+
   return (
     <div className="container mx-auto max-w-3xl py-8 px-4 font-body" >
       <div className="space-y-8">
@@ -187,6 +259,57 @@ export function EditForm({ data, setData }: EditFormProps) {
               </Label>
             ))}
           </RadioGroup>
+        </div>
+
+        {/* Top Banner */}
+        <div className="p-6 border rounded-lg shadow-sm bg-card">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Palette className="h-5 w-5 text-amber-500" />
+              <h2 className="text-2xl font-headline font-bold text-primary">विशेष संदेश (Top Banner)</h2>
+            </div>
+            <Switch
+              checked={data.topBanner?.enabled || false}
+              onCheckedChange={handleTopBannerChange}
+            />
+          </div>
+
+          {(data.topBanner?.enabled) && (
+            <div className="animate-in fade-in zoom-in-95 duration-200 space-y-4">
+              <div className="flex justify-between items-center gap-2 flex-wrap">
+                <Label htmlFor="topBannerText">संदेश</Label>
+                <div className="w-auto">
+                  <FontSelector
+                    value={data.topBanner?.font || 'font-headline'}
+                    onValueChange={handleTopBannerFontChange}
+                    bold={data.topBanner?.bold ?? true}
+                    onBoldChange={handleTopBannerBoldChange}
+                    size={data.topBanner?.fontSize || 'text-xs sm:text-sm'}
+                    onSizeChange={handleTopBannerFontSizeChange}
+                  />
+                </div>
+              </div>
+              <Input
+                id="topBannerText"
+                value={data.topBanner?.text || ""}
+                onChange={handleTopBannerTextChange}
+                placeholder="उदा. You are specially invited"
+              />
+              <div className="flex items-center gap-2 mt-2">
+                <Label htmlFor="topBannerColor" className="whitespace-nowrap">Text Color:</Label>
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background">
+                  <input
+                    type="color"
+                    id="topBannerColor"
+                    value={data.topBanner?.color || "#ffffff"}
+                    onChange={handleTopBannerColorChange}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                  <span className="text-xs text-muted-foreground w-16">{data.topBanner?.color || "#ffffff"}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
 
@@ -228,6 +351,14 @@ export function EditForm({ data, setData }: EditFormProps) {
                         size={data.fontSizes?.[`${side}Name` as keyof typeof data.fontSizes] || 'text-xl sm:text-3xl'}
                         onSizeChange={(s) => handleFontSizeChange(`${side}Name`, s)}
                       />
+                      <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                        <input
+                          type="color"
+                          value={data.colors?.[`${side}Name` as keyof typeof data.colors] || "#ffffff"}
+                          onChange={(e) => handleColorChange(`${side}Name`, e.target.value)}
+                          className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                        />
+                      </div>
                     </div>
                   </div>
                   <Input id={`${side}Name`} name={`${side}Name`} value={side === 'bride' ? data.brideName : data.groomName} onChange={handleChange} />
@@ -235,7 +366,7 @@ export function EditForm({ data, setData }: EditFormProps) {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center flex-wrap gap-2">
                     <Label htmlFor={`${side}ParentsDetails`}>{side === 'bride' ? 'वधूचे पालक / तपशील' : 'वराचे पालक / तपशील'}</Label>
-                    <div className="w-auto">
+                    <div className="w-auto flex gap-2">
                       <FontSelector
                         value={data.fonts?.[`${side}Parents` as keyof typeof data.fonts] || 'font-body'}
                         onValueChange={(v) => handleFontChange(`${side}Parents`, v)}
@@ -244,6 +375,14 @@ export function EditForm({ data, setData }: EditFormProps) {
                         size={data.fontSizes?.[`${side}Parents` as keyof typeof data.fontSizes] || 'text-xs'}
                         onSizeChange={(s) => handleFontSizeChange(`${side}Parents`, s)}
                       />
+                      <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                        <input
+                          type="color"
+                          value={data.colors?.[`${side}Parents` as keyof typeof data.colors] || "#ffffff"}
+                          onChange={(e) => handleColorChange(`${side}Parents`, e.target.value)}
+                          className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                        />
+                      </div>
                     </div>
                   </div>
                   <Input
@@ -360,10 +499,127 @@ export function EditForm({ data, setData }: EditFormProps) {
               <Input id="mainYear" name="mainYear" value={data.mainYear} onChange={handleChange} />
             </div>
           </div>
+
+          <div className="mt-4 space-y-2">
+            {/* Date Font */}
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>तारीख फॉन्ट</Label>
+              <div className="w-auto flex gap-2">
+                <FontSelector
+                  value={data.fonts?.mainDate || 'font-headline'}
+                  onValueChange={(v) => handleFontChange('mainDate', v)}
+                  bold={data.boldText?.mainDate ?? true}
+                  onBoldChange={(b) => handleBoldChange('mainDate', b)}
+                  size={data.fontSizes?.mainDate || 'text-6xl sm:text-9xl'}
+                  onSizeChange={(s) => handleFontSizeChange('mainDate', s)}
+                />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.mainDate || "#ffffff"}
+                    onChange={(e) => handleColorChange('mainDate', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Day Font */}
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>दिवस फॉन्ट</Label>
+              <div className="w-auto flex gap-2">
+                <FontSelector
+                  value={data.fonts?.mainDay || 'font-serif'}
+                  onValueChange={(v) => handleFontChange('mainDay', v)}
+                  bold={data.boldText?.mainDay ?? false}
+                  onBoldChange={(b) => handleBoldChange('mainDay', b)}
+                  size={data.fontSizes?.mainDay || 'text-2xl'}
+                  onSizeChange={(s) => handleFontSizeChange('mainDay', s)}
+                />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.mainDay || "#ffffff"}
+                    onChange={(e) => handleColorChange('mainDay', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Month Font */}
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>महिना फॉन्ट</Label>
+              <div className="w-auto flex gap-2">
+                <FontSelector
+                  value={data.fonts?.mainMonth || 'font-body'}
+                  onValueChange={(v) => handleFontChange('mainMonth', v)}
+                  bold={data.boldText?.mainMonth ?? false}
+                  onBoldChange={(b) => handleBoldChange('mainMonth', b)}
+                  size={data.fontSizes?.mainMonth || 'text-xl'}
+                  onSizeChange={(s) => handleFontSizeChange('mainMonth', s)}
+                />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.mainMonth || "#ffffff"}
+                    onChange={(e) => handleColorChange('mainMonth', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Time Font */}
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>वेळ फॉन्ट</Label>
+              <div className="w-auto flex gap-2">
+                <FontSelector
+                  value={data.fonts?.mainTime || 'font-body'}
+                  onValueChange={(v) => handleFontChange('mainTime', v)}
+                  bold={data.boldText?.mainTime ?? false}
+                  onBoldChange={(b) => handleBoldChange('mainTime', b)}
+                  size={data.fontSizes?.mainTime || 'text-xl'}
+                  onSizeChange={(s) => handleFontSizeChange('mainTime', s)}
+                />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.mainTime || "#ffffff"}
+                    onChange={(e) => handleColorChange('mainTime', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Year Font */}
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>वर्ष फॉन्ट</Label>
+              <div className="w-auto flex gap-2">
+                <FontSelector
+                  value={data.fonts?.mainYear || 'font-body'}
+                  onValueChange={(v) => handleFontChange('mainYear', v)}
+                  bold={data.boldText?.mainYear ?? true}
+                  onBoldChange={(b) => handleBoldChange('mainYear', b)}
+                  size={data.fontSizes?.mainYear || 'text-5xl'}
+                  onSizeChange={(s) => handleFontSizeChange('mainYear', s)}
+                />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.mainYear || "#ffffff"}
+                    onChange={(e) => handleColorChange('mainYear', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="mt-4 space-y-2">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>शुभ मुहूर्त शीर्षक फॉन्ट</Label>
-              <div className="w-auto">
+              <div className="w-auto flex gap-2">
                 <FontSelector
                   value={data.fonts?.shubhMuhhurt || 'font-headline'}
                   onValueChange={(v) => handleFontChange('shubhMuhhurt', v)}
@@ -372,13 +628,21 @@ export function EditForm({ data, setData }: EditFormProps) {
                   size={data.fontSizes?.shubhMuhhurt || 'text-2xl sm:text-4xl'}
                   onSizeChange={(s) => handleFontSizeChange('shubhMuhhurt', s)}
                 />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.shubhMuhhurt || "#ffffff"}
+                    onChange={(e) => handleColorChange('shubhMuhhurt', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
               </div>
             </div>
           </div>
           <div className="mt-4 space-y-2">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label htmlFor="weddingHeader">लग्नाचे शीर्षक (उदा. शुभविवाह)</Label>
-              <div className="w-auto">
+              <div className="w-auto flex gap-2">
                 <FontSelector
                   value={data.fonts?.weddingHeader || 'font-custom-header'}
                   onValueChange={(v) => handleFontChange('weddingHeader', v)}
@@ -387,6 +651,14 @@ export function EditForm({ data, setData }: EditFormProps) {
                   size={data.fontSizes?.weddingHeader || 'text-4xl sm:text-6xl'}
                   onSizeChange={(s) => handleFontSizeChange('weddingHeader', s)}
                 />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.weddingHeader || "#ffffff"}
+                    onChange={(e) => handleColorChange('weddingHeader', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
               </div>
             </div>
             <Input id="weddingHeader" name="weddingHeader" value={data.weddingHeader || 'शुभविवाह'} onChange={handleChange} />
@@ -395,7 +667,7 @@ export function EditForm({ data, setData }: EditFormProps) {
           <div className="mt-4 space-y-2">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label htmlFor="requestMessage">निमंत्रण संदेश</Label>
-              <div className="w-auto">
+              <div className="w-auto flex gap-2">
                 <FontSelector
                   value={data.fonts?.requestMessage || 'font-body'}
                   onValueChange={(v) => handleFontChange('requestMessage', v)}
@@ -404,6 +676,14 @@ export function EditForm({ data, setData }: EditFormProps) {
                   size={data.fontSizes?.requestMessage || 'text-lg'}
                   onSizeChange={(s) => handleFontSizeChange('requestMessage', s)}
                 />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.requestMessage || "#ffffff"}
+                    onChange={(e) => handleColorChange('requestMessage', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
               </div>
             </div>
             <Textarea
@@ -420,6 +700,30 @@ export function EditForm({ data, setData }: EditFormProps) {
         <div className="p-6 border rounded-lg shadow-sm bg-card">
           <h2 className="text-2xl font-headline font-bold text-primary mb-4">कार्यक्रम</h2>
           <div className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <Label htmlFor="scheduleSectionTitle">विभाग शीर्षक (उदा. कार्यक्रमाची रूपरेषा)</Label>
+                <div className="w-auto flex gap-2">
+                  <FontSelector
+                    value={data.fonts?.scheduleSectionTitle || 'font-headline'}
+                    onValueChange={(v) => handleFontChange('scheduleSectionTitle', v)}
+                    bold={data.boldText?.scheduleSectionTitle ?? true}
+                    onBoldChange={(b) => handleBoldChange('scheduleSectionTitle', b)}
+                    size={data.fontSizes?.scheduleSectionTitle || 'text-2xl sm:text-4xl'}
+                    onSizeChange={(s) => handleFontSizeChange('scheduleSectionTitle', s)}
+                  />
+                  <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                    <input
+                      type="color"
+                      value={data.colors?.scheduleSectionTitle || "#ffffff"}
+                      onChange={(e) => handleColorChange('scheduleSectionTitle', e.target.value)}
+                      className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+              <Input id="scheduleSectionTitle" name="scheduleSectionTitle" value={data.scheduleSectionTitle || 'कार्यक्रमाची रूपरेषा'} onChange={handleChange} />
+            </div>
             {data.schedule.map((item, index) => (
               <div key={index} className="flex items-end gap-2">
                 <div className="grid grid-cols-2 gap-2 flex-grow">
@@ -437,6 +741,50 @@ export function EditForm({ data, setData }: EditFormProps) {
             ))}
           </div>
           <Button variant="outline" className="mt-4" onClick={addScheduleItem}><PlusCircle className="mr-2 h-4 w-4" /> नवीन कार्यक्रम जोडा</Button>
+          <div className="mt-4 space-y-2">
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>कार्यक्रम नाव फॉन्ट</Label>
+              <div className="w-auto flex gap-2">
+                <FontSelector
+                  value={data.fonts?.scheduleName || 'font-headline'}
+                  onValueChange={(v) => handleFontChange('scheduleName', v)}
+                  bold={data.boldText?.scheduleName ?? true}
+                  onBoldChange={(b) => handleBoldChange('scheduleName', b)}
+                  size={data.fontSizes?.scheduleName || 'text-xl sm:text-3xl'}
+                  onSizeChange={(s) => handleFontSizeChange('scheduleName', s)}
+                />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.scheduleName || "#ffffff"}
+                    onChange={(e) => handleColorChange('scheduleName', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <Label>कार्यक्रम तपशील फॉन्ट</Label>
+              <div className="w-auto flex gap-2">
+                <FontSelector
+                  value={data.fonts?.scheduleDetails || 'font-serif'}
+                  onValueChange={(v) => handleFontChange('scheduleDetails', v)}
+                  bold={data.boldText?.scheduleDetails ?? false}
+                  onBoldChange={(b) => handleBoldChange('scheduleDetails', b)}
+                  size={data.fontSizes?.scheduleDetails || 'text-xl'}
+                  onSizeChange={(s) => handleFontSizeChange('scheduleDetails', s)}
+                />
+                <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                  <input
+                    type="color"
+                    value={data.colors?.scheduleDetails || "#ffffff"}
+                    onChange={(e) => handleColorChange('scheduleDetails', e.target.value)}
+                    className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Venue */}
@@ -446,7 +794,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             <div className="space-y-2">
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <Label htmlFor="venueName">स्थळाचे नाव</Label>
-                <div className="w-auto">
+                <div className="w-auto flex gap-2">
                   <FontSelector
                     value={data.fonts?.place || 'font-headline'}
                     onValueChange={(v) => handleFontChange('place', v)}
@@ -455,12 +803,40 @@ export function EditForm({ data, setData }: EditFormProps) {
                     size={data.fontSizes?.place || 'text-2xl sm:text-5xl'}
                     onSizeChange={(s) => handleFontSizeChange('place', s)}
                   />
+                  <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                    <input
+                      type="color"
+                      value={data.colors?.place || "#ffffff"}
+                      onChange={(e) => handleColorChange('place', e.target.value)}
+                      className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                    />
+                  </div>
                 </div>
               </div>
               <Input id="venueName" name="venueName" value={data.venueName} onChange={handleChange} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="venueCity">शहर</Label>
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <Label htmlFor="venueCity">शहर</Label>
+                <div className="w-auto flex gap-2">
+                  <FontSelector
+                    value={data.fonts?.venueCity || 'font-body'}
+                    onValueChange={(v) => handleFontChange('venueCity', v)}
+                    bold={data.boldText?.venueCity ?? false}
+                    onBoldChange={(b) => handleBoldChange('venueCity', b)}
+                    size={data.fontSizes?.venueCity || 'text-xl sm:text-3xl'}
+                    onSizeChange={(s) => handleFontSizeChange('venueCity', s)}
+                  />
+                  <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                    <input
+                      type="color"
+                      value={data.colors?.venueCity || "#ffffff"}
+                      onChange={(e) => handleColorChange('venueCity', e.target.value)}
+                      className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
               <Input id="venueCity" name="venueCity" value={data.venueCity} onChange={handleChange} />
             </div>
             <div className="space-y-2 md:col-span-2">

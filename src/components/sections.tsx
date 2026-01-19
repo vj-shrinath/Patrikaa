@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 
 import type { InvitationData } from "@/lib/initial-data";
 import { Sparkles } from "./Sparkles";
@@ -163,21 +164,21 @@ export function DateSection({ data }: SectionProps) {
                     <Sparkles />
                     <h2 className={cn("text-primary-foreground mb-6", data.fonts?.shubhMuhhurt || 'font-headline', data.boldText?.shubhMuhhurt && "font-bold", data.fontSizes?.shubhMuhhurt || 'text-2xl sm:text-4xl')}>शुभ मुहूर्त</h2>
                     <div className="my-8 p-6 border border-accent/30 rounded-lg bg-accent/5 backdrop-blur-sm">
-                        <p className="text-2xl text-primary-foreground/90 font-serif">{data.mainDay}</p>
+                        <p className={cn("text-2xl text-primary-foreground/90", data.fonts?.mainDay || 'font-serif', data.boldText?.mainDay && "font-bold", data.fontSizes?.mainDay || 'text-2xl')} style={{ color: data.colors?.mainDay }}>{data.mainDay}</p>
                         <div className="flex justify-between items-center my-4">
                             <div className="text-right w-1/3 space-y-2">
                                 <hr className="border-accent/50 w-full ml-auto" />
-                                <p className="text-xl font-semibold">{data.mainMonth || "जुलै"}</p>
+                                <p className={cn("text-xl", data.fonts?.mainMonth || 'font-body', data.boldText?.mainMonth && "font-bold", data.fontSizes?.mainMonth || 'text-xl')} style={{ color: data.colors?.mainMonth }}>{data.mainMonth || "जुलै"}</p>
                             </div>
-                            <p className="text-6xl sm:text-9xl font-headline font-bold text-primary-foreground mx-2 sm:mx-6 scale-110 transform">
+                            <p className={cn("text-primary-foreground mx-2 sm:mx-6 scale-110 transform", data.fonts?.mainDate || 'font-headline', data.boldText?.mainDate && "font-bold", data.fontSizes?.mainDate || 'text-6xl sm:text-9xl')} style={{ color: data.colors?.mainDate }}>
                                 {data.mainDate}
                             </p>
                             <div className="text-left w-1/3 space-y-2">
                                 <hr className="border-accent/50 w-full mr-auto" />
-                                <p className="text-xl font-semibold">{data.mainTime}</p>
+                                <p className={cn("text-xl", data.fonts?.mainTime || 'font-body', data.boldText?.mainTime && "font-bold", data.fontSizes?.mainTime || 'text-xl')} style={{ color: data.colors?.mainTime }}>{data.mainTime}</p>
                             </div>
                         </div>
-                        <p className="text-5xl text-primary-foreground/90 font-bold">{data.mainYear}</p>
+                        <p className={cn("text-primary-foreground/90", data.fonts?.mainYear || 'font-body', data.boldText?.mainYear && "font-bold", data.fontSizes?.mainYear || 'text-5xl')} style={{ color: data.colors?.mainYear }}>{data.mainYear}</p>
                     </div>
                     <p className={cn("text-primary-foreground/90 max-w-md mx-auto leading-relaxed italic", data.fonts?.requestMessage || 'font-serif', data.boldText?.requestMessage && "font-bold", data.fontSizes?.requestMessage || 'text-lg')}>
                         {data.requestMessage ?? "या शुभमुहूर्तावर करण्याचे योजिले आहे, तरी या मंगलप्रसंगी आपण उपस्थित राहून वधू-वरास शुभाशीर्वाद द्यावेत, ह्यासाठीचे हे अग्रहाचे निमंत्रण."}
@@ -194,13 +195,13 @@ export function ScheduleSection({ data }: SectionProps) {
             <div className="inner-card-solid w-[95vw] sm:w-full p-2 sm:p-8">
                 <DecorativeFrame>
                     <Sparkles />
-                    <h2 className="text-2xl sm:text-4xl font-bold font-headline mb-6 sm:mb-10 text-primary-foreground">कार्यक्रमाची रूपरेषा</h2>
+                    <h2 className={cn("text-primary-foreground mb-6 sm:mb-10", data.fonts?.scheduleSectionTitle || 'font-headline', data.boldText?.scheduleSectionTitle && "font-bold", data.fontSizes?.scheduleSectionTitle || 'text-2xl sm:text-4xl')} style={{ color: data.colors?.scheduleSectionTitle }}>{data.scheduleSectionTitle || "कार्यक्रमाची रूपरेषा"}</h2>
                     <div className="space-y-8 w-full max-w-md mx-auto px-6 sm:px-0">
                         {data.schedule.map((event, index) => (
                             <div key={index} className="fade-in-element text-center border-b border-accent/30 pb-6 last:border-none relative">
                                 <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 text-accent text-xl">❦</div>
-                                <h3 className="text-xl sm:text-3xl font-bold text-primary-foreground mb-2">{event.name}</h3>
-                                <p className="text-xl text-primary-foreground/80 font-serif">{event.details}</p>
+                                <h3 className={cn("text-primary-foreground mb-2", data.fonts?.scheduleName || 'font-headline', data.boldText?.scheduleName && "font-bold", data.fontSizes?.scheduleName || 'text-xl sm:text-3xl')} style={{ color: data.colors?.scheduleName }}>{event.name}</h3>
+                                <p className={cn("text-primary-foreground/80", data.fonts?.scheduleDetails || 'font-serif', data.boldText?.scheduleDetails && "font-bold", data.fontSizes?.scheduleDetails || 'text-xl')} style={{ color: data.colors?.scheduleDetails }}>{event.details}</p>
                             </div>
                         ))}
                     </div>
@@ -221,8 +222,8 @@ export function VenueSection({ data }: SectionProps) {
                         <div className="p-4 rounded-full bg-accent/10 border-2 border-accent/50">
                             <MapPin className="w-16 h-16 text-accent animate-bounce" />
                         </div>
-                        <p className={cn("text-primary-foreground drop-shadow-md", data.fonts?.place || 'font-headline', data.boldText?.place && "font-bold", data.fontSizes?.place || 'text-2xl sm:text-5xl')}>{data.venueName}</p>
-                        <p className="text-xl sm:text-3xl text-primary-foreground/90">{data.venueCity}</p>
+                        <p className={cn("text-primary-foreground drop-shadow-md", data.fonts?.place || 'font-headline', data.boldText?.place && "font-bold", data.fontSizes?.place || 'text-2xl sm:text-5xl')} style={{ color: data.colors?.place }}>{data.venueName}</p>
+                        <p className={cn("text-primary-foreground/90", data.fonts?.venueCity || 'font-body', data.boldText?.venueCity && "font-bold", data.fontSizes?.venueCity || 'text-xl sm:text-3xl')} style={{ color: data.colors?.venueCity }}>{data.venueCity}</p>
                         <Button asChild className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 text-lg px-8 py-6 rounded-full shadow-lg transition-transform hover:scale-105">
                             <a
                                 href={data.venueMapLink}
@@ -237,5 +238,57 @@ export function VenueSection({ data }: SectionProps) {
                 </DecorativeFrame>
             </div>
         </section>
+    );
+}
+
+export function TopBannerSection({ data }: SectionProps) {
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            // Should be visible if at very top or scrolling up
+            // Hide if scrolling down and not at top
+            if (currentScrollY < 20) {
+                setIsVisible(true);
+            } else if (currentScrollY > lastScrollY) {
+                setIsVisible(false);
+            } else {
+                setIsVisible(true);
+            }
+            lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    if (!data.topBanner?.enabled) return null;
+
+    return (
+        <div className={cn(
+            "w-full flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300 ease-in-out",
+            isVisible ? "translate-y-0" : "-translate-y-[120%]"
+        )}>
+            {/* Wrapper to match card width constraints (w-[95vw] sm:w-full, max-w-2xl) and mimic the padding (px-2 sm:px-8) */}
+            <div className="w-[95vw] sm:w-full max-w-2xl px-2 sm:px-8 pt-2">
+                <div
+                    className={cn(
+                        "pointer-events-auto bg-primary border-x border-b border-accent/60 rounded-b-2xl shadow-xl py-3 text-center tracking-widest flex items-center justify-center gap-3",
+                        data.topBanner?.font || 'font-headline',
+                        data.topBanner?.bold && "font-bold",
+                        data.topBanner?.fontSize || 'text-xs sm:text-sm'
+                    )}
+                    style={{ color: data.topBanner?.color || 'hsl(var(--primary-foreground))' }}
+                >
+                    <span className="text-accent animate-pulse">✦</span>
+                    <span className="tracking-widest">{data.topBanner.text}</span>
+                    <span className="text-accent animate-pulse">✦</span>
+                </div>
+            </div>
+        </div>
     );
 }

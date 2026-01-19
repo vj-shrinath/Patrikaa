@@ -129,10 +129,10 @@ export type InvitationData = {
 
 
 export const initialData: InvitationData = {
-  brideName: "प्रीती",
+  brideName: "मुक्ता",
   brideFather: "राम पाटील",
   brideMother: "आशा पाटील",
-  groomName: "आदित्य",
+  groomName: "शिवम",
   groomFather: "अजय पवार",
   groomMother: "सीमा पवार",
   mainDate: "२६",

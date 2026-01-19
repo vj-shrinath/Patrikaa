@@ -342,7 +342,7 @@ export function EditForm({ data, setData }: EditFormProps) {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center flex-wrap gap-2">
                     <Label htmlFor={`${side}Name`}>{side === 'bride' ? 'वधूचे नाव' : 'वराचे नाव'}</Label>
-                    <div className="w-auto">
+                    <div className="w-full sm:w-auto flex flex-wrap gap-2">
                       <FontSelector
                         value={data.fonts?.[`${side}Name` as keyof typeof data.fonts] || 'font-headline'}
                         onValueChange={(v) => handleFontChange(`${side}Name`, v)}
@@ -366,7 +366,7 @@ export function EditForm({ data, setData }: EditFormProps) {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center flex-wrap gap-2">
                     <Label htmlFor={`${side}ParentsDetails`}>{side === 'bride' ? 'वधूचे पालक / तपशील' : 'वराचे पालक / तपशील'}</Label>
-                    <div className="w-auto flex gap-2">
+                    <div className="w-full sm:w-auto flex flex-wrap gap-2">
                       <FontSelector
                         value={data.fonts?.[`${side}Parents` as keyof typeof data.fonts] || 'font-body'}
                         onValueChange={(v) => handleFontChange(`${side}Parents`, v)}
@@ -504,7 +504,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             {/* Date Font */}
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>तारीख फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.mainDate || 'font-headline'}
                   onValueChange={(v) => handleFontChange('mainDate', v)}
@@ -527,7 +527,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             {/* Day Font */}
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>दिवस फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.mainDay || 'font-serif'}
                   onValueChange={(v) => handleFontChange('mainDay', v)}
@@ -550,7 +550,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             {/* Month Font */}
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>महिना फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.mainMonth || 'font-body'}
                   onValueChange={(v) => handleFontChange('mainMonth', v)}
@@ -573,7 +573,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             {/* Time Font */}
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>वेळ फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.mainTime || 'font-body'}
                   onValueChange={(v) => handleFontChange('mainTime', v)}
@@ -596,7 +596,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             {/* Year Font */}
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>वर्ष फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.mainYear || 'font-body'}
                   onValueChange={(v) => handleFontChange('mainYear', v)}
@@ -619,7 +619,7 @@ export function EditForm({ data, setData }: EditFormProps) {
           <div className="mt-4 space-y-2">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>शुभ मुहूर्त शीर्षक फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.shubhMuhhurt || 'font-headline'}
                   onValueChange={(v) => handleFontChange('shubhMuhhurt', v)}
@@ -642,7 +642,7 @@ export function EditForm({ data, setData }: EditFormProps) {
           <div className="mt-4 space-y-2">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label htmlFor="weddingHeader">लग्नाचे शीर्षक (उदा. शुभविवाह)</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.weddingHeader || 'font-custom-header'}
                   onValueChange={(v) => handleFontChange('weddingHeader', v)}
@@ -667,7 +667,7 @@ export function EditForm({ data, setData }: EditFormProps) {
           <div className="mt-4 space-y-2">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label htmlFor="requestMessage">निमंत्रण संदेश</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.requestMessage || 'font-body'}
                   onValueChange={(v) => handleFontChange('requestMessage', v)}
@@ -703,7 +703,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             <div className="space-y-2">
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <Label htmlFor="scheduleSectionTitle">विभाग शीर्षक (उदा. कार्यक्रमाची रूपरेषा)</Label>
-                <div className="w-auto flex gap-2">
+                <div className="w-full sm:w-auto flex flex-wrap gap-2">
                   <FontSelector
                     value={data.fonts?.scheduleSectionTitle || 'font-headline'}
                     onValueChange={(v) => handleFontChange('scheduleSectionTitle', v)}
@@ -744,7 +744,7 @@ export function EditForm({ data, setData }: EditFormProps) {
           <div className="mt-4 space-y-2">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>कार्यक्रम नाव फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.scheduleName || 'font-headline'}
                   onValueChange={(v) => handleFontChange('scheduleName', v)}
@@ -765,7 +765,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             </div>
             <div className="flex justify-between items-center flex-wrap gap-2">
               <Label>कार्यक्रम तपशील फॉन्ट</Label>
-              <div className="w-auto flex gap-2">
+              <div className="w-full sm:w-auto flex flex-wrap gap-2">
                 <FontSelector
                   value={data.fonts?.scheduleDetails || 'font-serif'}
                   onValueChange={(v) => handleFontChange('scheduleDetails', v)}
@@ -794,7 +794,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             <div className="space-y-2">
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <Label htmlFor="venueName">स्थळाचे नाव</Label>
-                <div className="w-auto flex gap-2">
+                <div className="w-full sm:w-auto flex flex-wrap gap-2">
                   <FontSelector
                     value={data.fonts?.place || 'font-headline'}
                     onValueChange={(v) => handleFontChange('place', v)}
@@ -818,7 +818,7 @@ export function EditForm({ data, setData }: EditFormProps) {
             <div className="space-y-2">
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <Label htmlFor="venueCity">शहर</Label>
-                <div className="w-auto flex gap-2">
+                <div className="w-full sm:w-auto flex flex-wrap gap-2">
                   <FontSelector
                     value={data.fonts?.venueCity || 'font-body'}
                     onValueChange={(v) => handleFontChange('venueCity', v)}

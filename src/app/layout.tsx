@@ -4,13 +4,13 @@ import { Toaster } from "@/components/ui/toaster"
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://digiinvite.in'),
+  metadataBase: new URL('https://digiinvite.vercel.app'),
   title: 'Digital Invite',
   description: 'Create your beautiful Marathi digital wedding invitation.',
   openGraph: {
     title: 'Digital Invite',
     description: 'Create your beautiful Marathi digital wedding invitation.',
-    url: 'https://digiinvite.in',
+    url: 'https://digiinvite.vercel.app',
     siteName: 'Digital Invite',
     images: [
       {

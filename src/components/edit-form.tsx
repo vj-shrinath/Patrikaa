@@ -1085,6 +1085,72 @@ export function EditForm({ data, setData }: EditFormProps) {
           </div>
         </div>
 
+        <div className="p-6 border rounded-lg shadow-sm bg-card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-headline font-semibold flex items-center gap-2">
+              क्रेडिट्स आणि लोगो (Credits & Logo)
+            </h2>
+            <Switch
+              checked={data.creatorFooter?.enabled || false}
+              onCheckedChange={(checked) => setData({
+                ...data,
+                creatorFooter: {
+                  text: "Designed by DigiInvite",
+                  ...data.creatorFooter,
+                  enabled: checked
+                }
+              })}
+            />
+          </div>
+
+          {data.creatorFooter?.enabled && (
+            <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
+              <div className="grid gap-2">
+                <Label>फूटर मजकूर (Footer Text)</Label>
+                <Input
+                  value={data.creatorFooter.text || ''}
+                  onChange={(e) => setData({
+                    ...data,
+                    creatorFooter: {
+                      ...data.creatorFooter!,
+                      text: e.target.value
+                    }
+                  })}
+                  placeholder="Footer Text"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>लोगो URL (Logo URL - Optional)</Label>
+                <Input
+                  value={data.creatorFooter.logoUrl || ''}
+                  onChange={(e) => setData({
+                    ...data,
+                    creatorFooter: {
+                      ...data.creatorFooter!,
+                      logoUrl: e.target.value
+                    }
+                  })}
+                  placeholder="https://example.com/logo.png"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>वेबसाईट लिंक (Link URL - Optional)</Label>
+                <Input
+                  value={data.creatorFooter.linkUrl || ''}
+                  onChange={(e) => setData({
+                    ...data,
+                    creatorFooter: {
+                      ...data.creatorFooter!,
+                      linkUrl: e.target.value
+                    }
+                  })}
+                  placeholder="https://example.com"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* AI Helper */}
         <div className="p-6 border rounded-lg shadow-sm bg-accent/20">
           <div className="flex items-center justify-between flex-wrap gap-4">

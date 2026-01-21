@@ -247,6 +247,41 @@ export function ScheduleSection({ data }: SectionProps) {
     );
 }
 
+export function CreatorFooterSection({ data }: SectionProps) {
+    if (!data.creatorFooter?.enabled) return null;
+
+    return (
+        <section className="fade-in-element w-full py-4 mt-auto">
+            <div className="max-w-2xl mx-auto px-4 flex flex-col items-center justify-center gap-2 text-center">
+                {data.creatorFooter.logoUrl && (
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-2 overflow-hidden rounded-full border-2 border-accent/30 shadow-sm bg-white/10 backdrop-blur-sm">
+                        <Image
+                            src={data.creatorFooter.logoUrl}
+                            alt="Creator Logo"
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
+                )}
+                {data.creatorFooter.linkUrl ? (
+                    <a
+                        href={data.creatorFooter.linkUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs sm:text-sm text-primary-foreground/60 hover:text-primary-foreground/90 transition-colors uppercase tracking-widest font-sans flex items-center gap-2"
+                    >
+                        {data.creatorFooter.text}
+                    </a>
+                ) : (
+                    <p className="text-xs sm:text-sm text-primary-foreground/60 uppercase tracking-widest font-sans">
+                        {data.creatorFooter.text}
+                    </p>
+                )}
+            </div>
+        </section>
+    );
+}
+
 export function VenueSection({ data }: SectionProps) {
     return (
         <section className="page fade-in-element p-2 sm:p-8">

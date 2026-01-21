@@ -143,6 +143,12 @@ export type InvitationData = {
     colorTitle?: string;
     colorContent?: string;
   }[];
+  creatorFooter?: {
+    enabled: boolean;
+    text: string;
+    logoUrl?: string; // Optional URL for studio logo
+    linkUrl?: string; // Optional link to studio/creator website
+  };
 };
 
 
@@ -264,5 +270,11 @@ export const initialData: InvitationData = {
     isEnabled: false,
     targetDate: "2026-07-26T18:16:00"
   },
-  customSections: []
+  customSections: [],
+  creatorFooter: {
+    enabled: false,
+    text: "Designed by Studio Name",
+    logoUrl: "",
+    linkUrl: ""
+  }
 };

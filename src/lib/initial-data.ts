@@ -125,6 +125,24 @@ export type InvitationData = {
     fontSize?: string;
     color?: string;
   };
+  countdown?: {
+    isEnabled: boolean;
+    targetDate: string;
+  };
+  customSections?: {
+    id: string;
+    title: string;
+    content: string;
+    imageUrl?: string;
+    fontTitle?: string;
+    fontContent?: string;
+    boldTitle?: boolean;
+    boldContent?: boolean;
+    fontSizeTitle?: string;
+    fontSizeContent?: string;
+    colorTitle?: string;
+    colorContent?: string;
+  }[];
 };
 
 
@@ -241,5 +259,10 @@ export const initialData: InvitationData = {
     bold: true,
     fontSize: "text-xs sm:text-sm",
     color: "#ffffff"
-  }
+  },
+  countdown: {
+    isEnabled: false,
+    targetDate: "2026-07-26T18:16:00"
+  },
+  customSections: []
 };

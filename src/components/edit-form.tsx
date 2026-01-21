@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { InvitationData } from "@/lib/initial-data";
 import { Switch } from "@/components/ui/switch";
-import { PlusCircle, Trash2, Wand2, Loader2, Palette, Star } from "lucide-react";
+import { PlusCircle, Trash2, Wand2, Loader2, Palette, Star, ArrowUp, ArrowDown, GripVertical } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -236,6 +236,97 @@ export function EditForm({ data, setData }: EditFormProps) {
     });
   };
 
+  const handleCountdownChange = (checked: boolean) => {
+    setData({
+      ...data,
+      countdown: {
+        targetDate: data.countdown?.targetDate || "2026-01-26T18:00",
+        ...data.countdown,
+        isEnabled: checked,
+      }
+    });
+  };
+
+  const handleCountdownDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({
+      ...data,
+      countdown: {
+        isEnabled: data.countdown?.isEnabled || false,
+        ...data.countdown,
+        targetDate: e.target.value
+      }
+    });
+  };
+
+  const addCustomSection = () => {
+    const newId = `custom-${Date.now()}`;
+    const newSection = {
+      id: newId,
+      title: "New Card",
+      content: "Card Details",
+      fontTitle: "font-headline",
+      boldTitle: true,
+      fontSizeTitle: "text-2xl sm:text-4xl",
+      colorTitle: "#ffffff",
+      fontContent: "font-serif",
+      boldContent: false,
+      fontSizeContent: "text-lg sm:text-xl",
+      colorContent: "#e9d5ff"
+    };
+    const newCustomSections = [...(data.customSections || []), newSection];
+    const newOrder = [...(data.sectionOrder || ['welcome', 'couple', 'date', 'schedule', 'venue']), newId];
+
+    setData({
+      ...data,
+      customSections: newCustomSections,
+      sectionOrder: newOrder
+    });
+  };
+
+  const removeCustomSection = (id: string) => {
+    const newCustomSections = data.customSections?.filter(s => s.id !== id) || [];
+    const newOrder = data.sectionOrder?.filter(s => s !== id) || [];
+    setData({
+      ...data,
+      customSections: newCustomSections,
+      sectionOrder: newOrder
+    });
+  };
+
+  const updateCustomSection = (id: string, field: string, value: string) => {
+    const newCustomSections = data.customSections?.map(s => s.id === id ? { ...s, [field]: value } : s) || [];
+    setData({ ...data, customSections: newCustomSections });
+  };
+
+  const moveSection = (index: number, direction: 'up' | 'down') => {
+    const currentOrder = data.sectionOrder || ['welcome', 'couple', 'date', 'schedule', 'venue'];
+    const newOrder = [...currentOrder];
+
+    if (direction === 'up' && index > 0) {
+      [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
+    } else if (direction === 'down' && index < newOrder.length - 1) {
+      [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+    }
+
+    setData({ ...data, sectionOrder: newOrder });
+  };
+
+  const getSectionLabel = (id: string) => {
+    switch (id) {
+      case 'welcome': return "स्वागत (Welcome)";
+      case 'couple': return "जोडपे (Couple / Gallery)";
+      case 'date': return "तारीख (Date)";
+      case 'schedule': return "कार्यक्रम (Schedule)";
+      case 'venue': return "ठिकाण (Venue)";
+      default:
+        if (id.startsWith('custom-')) {
+          const section = data.customSections?.find(s => s.id === id);
+          return section ? `Custom: ${section.title}` : "Custom Card";
+        }
+        return id;
+    }
+  };
+
 
   return (
     <div className="container mx-auto max-w-3xl py-8 px-4 font-body" >
@@ -259,6 +350,41 @@ export function EditForm({ data, setData }: EditFormProps) {
               </Label>
             ))}
           </RadioGroup>
+        </div>
+
+        {/* Reorder Sections */}
+        <div className="p-6 border rounded-lg shadow-sm bg-card">
+          <div className="flex items-center gap-4 mb-4">
+            <GripVertical className="h-6 w-6 text-primary" />
+            <h2 className="text-2xl font-headline font-bold text-primary">कार्ड क्रमवार लावा (Rearrange Cards)</h2>
+          </div>
+          <div className="space-y-2">
+            {(data.sectionOrder || ['welcome', 'couple', 'date', 'schedule', 'venue']).map((sectionId, index) => (
+              <div key={sectionId} className="flex items-center justify-between p-3 bg-accent/5 border rounded-md">
+                <span className="font-medium text-primary">{getSectionLabel(sectionId)}</span>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => moveSection(index, 'up')}
+                    disabled={index === 0}
+                    title="Move Up"
+                  >
+                    <ArrowUp className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => moveSection(index, 'down')}
+                    disabled={index === (data.sectionOrder || ['welcome', 'couple', 'date', 'schedule', 'venue']).length - 1}
+                    title="Move Down"
+                  >
+                    <ArrowDown className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Top Banner */}
@@ -476,7 +602,33 @@ export function EditForm({ data, setData }: EditFormProps) {
 
         {/* Date and Time */}
         <div className="p-6 border rounded-lg shadow-sm bg-card">
-          <h2 className="text-2xl font-headline font-bold text-primary mb-4">तारीख आणि वेळ</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-headline font-bold text-primary">तारीख आणि वेळ</h2>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="countdown-toggle">Countdown</Label>
+                <Switch
+                  id="countdown-toggle"
+                  checked={data.countdown?.isEnabled || false}
+                  onCheckedChange={handleCountdownChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          {data.countdown?.isEnabled && (
+            <div className="mb-6 p-4 border border-accent/30 rounded-md bg-accent/5">
+              <Label htmlFor="targetDate">Countdown Target Date</Label>
+              <Input
+                type="datetime-local"
+                id="targetDate"
+                value={data.countdown?.targetDate || ""}
+                onChange={handleCountdownDateChange}
+                className="mt-2"
+              />
+            </div>
+          )}
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2">
               <Label htmlFor="mainDate">तारीख (उदा. २६)</Label>
@@ -843,6 +995,93 @@ export function EditForm({ data, setData }: EditFormProps) {
               <Label htmlFor="venueMapLink">Google Maps लिंक</Label>
               <Input id="venueMapLink" name="venueMapLink" value={data.venueMapLink} onChange={handleChange} />
             </div>
+          </div>
+        </div>
+
+        {/* Custom Sections */}
+        <div className="p-6 border rounded-lg shadow-sm bg-card">
+          <h2 className="text-2xl font-headline font-bold text-primary mb-4">अतिरिक्त कार्ड (Extra Cards)</h2>
+          <div className="space-y-6">
+            {data.customSections?.map((section) => (
+              <div key={section.id} className="p-4 border border-border rounded-lg space-y-4 relative">
+                <div className="absolute top-4 right-4">
+                  <Button variant="ghost" size="icon" onClick={() => removeCustomSection(section.id)}>
+                    <Trash2 className="h-5 w-5 text-destructive" />
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center flex-wrap gap-2">
+                    <Label>कार्ड शीर्षक (Title)</Label>
+                    <div className="w-full sm:w-auto flex flex-wrap gap-2">
+                      <FontSelector
+                        value={section.fontTitle || 'font-headline'}
+                        onValueChange={(v) => updateCustomSection(section.id, 'fontTitle', v)}
+                        bold={section.boldTitle ?? true}
+                        onBoldChange={(b) => updateCustomSection(section.id, 'boldTitle', b as any)}
+                        size={section.fontSizeTitle || 'text-2xl sm:text-4xl'}
+                        onSizeChange={(s) => updateCustomSection(section.id, 'fontSizeTitle', s)}
+                      />
+                      <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                        <input
+                          type="color"
+                          value={section.colorTitle || "#ffffff"}
+                          onChange={(e) => updateCustomSection(section.id, 'colorTitle', e.target.value)}
+                          className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Input
+                    value={section.title}
+                    onChange={(e) => updateCustomSection(section.id, 'title', e.target.value)}
+                    placeholder="शीर्षक"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center flex-wrap gap-2">
+                    <Label>मजकूर (Content)</Label>
+                    <div className="w-full sm:w-auto flex flex-wrap gap-2">
+                      <FontSelector
+                        value={section.fontContent || 'font-serif'}
+                        onValueChange={(v) => updateCustomSection(section.id, 'fontContent', v)}
+                        bold={section.boldContent ?? false}
+                        onBoldChange={(b) => updateCustomSection(section.id, 'boldContent', b as any)}
+                        size={section.fontSizeContent || 'text-lg sm:text-xl'}
+                        onSizeChange={(s) => updateCustomSection(section.id, 'fontSizeContent', s)}
+                      />
+                      <div className="flex items-center gap-2 border rounded-md p-1 pl-2 bg-background h-10 w-auto">
+                        <input
+                          type="color"
+                          value={section.colorContent || "#ffffff"}
+                          onChange={(e) => updateCustomSection(section.id, 'colorContent', e.target.value)}
+                          className="h-6 w-8 cursor-pointer rounded border-none p-0 bg-transparent"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Textarea
+                    value={section.content}
+                    onChange={(e) => updateCustomSection(section.id, 'content', e.target.value)}
+                    placeholder="मजकूर"
+                    rows={3}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>फोटो URL (Optional)</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={section.imageUrl || ''}
+                      onChange={(e) => updateCustomSection(section.id, 'imageUrl', e.target.value)}
+                      placeholder="https://..."
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <Button onClick={addCustomSection} variant="outline" className="w-full">
+              <PlusCircle className="mr-2 h-4 w-4" /> नवीन कार्ड जोडा
+            </Button>
           </div>
         </div>
 

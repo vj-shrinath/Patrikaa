@@ -11,6 +11,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { cn } from "@/lib/utils";
 
 import { DecorativeFrame } from "./decorative-frame";
+import { CountdownTimer } from "./countdown-timer";
 
 type SectionProps = {
     data: InvitationData;
@@ -156,6 +157,8 @@ export function CoupleSection({ data }: SectionProps) {
     );
 }
 
+
+
 export function DateSection({ data }: SectionProps) {
     return (
         <section className="page fade-in-element p-2 sm:p-8">
@@ -163,6 +166,12 @@ export function DateSection({ data }: SectionProps) {
                 <DecorativeFrame>
                     <Sparkles />
                     <h2 className={cn("text-primary-foreground mb-6", data.fonts?.shubhMuhhurt || 'font-headline', data.boldText?.shubhMuhhurt && "font-bold", data.fontSizes?.shubhMuhhurt || 'text-2xl sm:text-4xl')}>शुभ मुहूर्त</h2>
+
+                    {/* Countdown Timer */}
+                    {data.countdown?.isEnabled && data.countdown.targetDate && (
+                        <CountdownTimer targetDate={data.countdown.targetDate} />
+                    )}
+
                     <div className="my-8 p-6 border border-accent/30 rounded-lg bg-accent/5 backdrop-blur-sm">
                         <p className={cn("text-2xl text-primary-foreground/90", data.fonts?.mainDay || 'font-serif', data.boldText?.mainDay && "font-bold", data.fontSizes?.mainDay || 'text-2xl')} style={{ color: data.colors?.mainDay }}>{data.mainDay}</p>
                         <div className="flex justify-between items-center my-4">
@@ -183,6 +192,33 @@ export function DateSection({ data }: SectionProps) {
                     <p className={cn("text-primary-foreground/90 max-w-md mx-auto leading-relaxed italic", data.fonts?.requestMessage || 'font-serif', data.boldText?.requestMessage && "font-bold", data.fontSizes?.requestMessage || 'text-lg')}>
                         {data.requestMessage ?? "या शुभमुहूर्तावर करण्याचे योजिले आहे, तरी या मंगलप्रसंगी आपण उपस्थित राहून वधू-वरास शुभाशीर्वाद द्यावेत, ह्यासाठीचे हे अग्रहाचे निमंत्रण."}
                     </p>
+                </DecorativeFrame>
+            </div>
+        </section>
+    );
+}
+
+export function CustomCardSection({ data, sectionId }: SectionProps & { sectionId: string }) {
+    const section = data.customSections?.find(s => s.id === sectionId);
+    if (!section) return null;
+
+    return (
+        <section className="page fade-in-element p-2 sm:p-8">
+            <div className="inner-card-solid w-[95vw] sm:w-full p-2 sm:p-8">
+                <DecorativeFrame>
+                    <Sparkles />
+                    {section.imageUrl && (
+                        <div className="mb-6 relative w-full h-64 sm:h-80 rounded-lg overflow-hidden border-2 border-accent/20 shadow-md">
+                            <Image
+                                src={section.imageUrl}
+                                alt={section.title}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                    )}
+                    <h2 className={cn("mb-4 text-primary-foreground", section.fontTitle || 'font-headline', section.boldTitle && "font-bold", section.fontSizeTitle || 'text-2xl sm:text-4xl')} style={{ color: section.colorTitle }}>{section.title}</h2>
+                    <p className={cn("text-primary-foreground/90 whitespace-pre-wrap", section.fontContent || 'font-serif', section.boldContent && "font-bold", section.fontSizeContent || 'text-lg sm:text-xl')} style={{ color: section.colorContent }}>{section.content}</p>
                 </DecorativeFrame>
             </div>
         </section>

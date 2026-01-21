@@ -3,7 +3,7 @@
 import type { InvitationData } from "@/lib/initial-data";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { cn } from "@/lib/utils";
-import { WelcomeSection, DateSection, ScheduleSection, VenueSection, CoupleSection, TopBannerSection } from "./sections";
+import { WelcomeSection, DateSection, ScheduleSection, VenueSection, CoupleSection, TopBannerSection, CustomCardSection } from "./sections";
 import { FallingLeaves } from "./falling-leaves";
 
 type InvitationCardProps = {
@@ -17,6 +17,10 @@ export function InvitationCard({ data }: InvitationCardProps) {
   const order = data.sectionOrder || ['welcome', 'couple', 'date', 'schedule', 'venue'];
 
   const renderSection = (section: string) => {
+    if (section.startsWith('custom-')) {
+      return <CustomCardSection key={section} data={data} sectionId={section} />;
+    }
+
     switch (section) {
       case 'welcome':
         return <WelcomeSection key="welcome" data={data} />;

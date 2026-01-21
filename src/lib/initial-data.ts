@@ -138,16 +138,14 @@ export type InvitationData = {
     fontContent?: string;
     boldTitle?: boolean;
     boldContent?: boolean;
-    fontSizeTitle?: string;
     fontSizeContent?: string;
-    colorTitle?: string;
     colorContent?: string;
   }[];
-  creatorFooter?: {
-    enabled: boolean;
+  branding?: {
+    isEnabled: boolean;
     text: string;
-    logoUrl?: string; // Optional URL for studio logo
-    linkUrl?: string; // Optional link to studio/creator website
+    logoUrl?: string;
+    contact?: string;
   };
 };
 
@@ -271,10 +269,10 @@ export const initialData: InvitationData = {
     targetDate: "2026-07-26T18:16:00"
   },
   customSections: [],
-  creatorFooter: {
-    enabled: false,
-    text: "Designed by Studio Name",
+  branding: {
+    isEnabled: false,
+    text: "Created with DigiInvite",
     logoUrl: "",
-    linkUrl: ""
+    contact: ""
   }
 };

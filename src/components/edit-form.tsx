@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { InvitationData } from "@/lib/initial-data";
 import { Switch } from "@/components/ui/switch";
-import { PlusCircle, Trash2, Wand2, Loader2, Palette, Star, ArrowUp, ArrowDown, GripVertical } from "lucide-react";
+import { PlusCircle, Trash2, Wand2, Loader2, Palette, Star, ArrowUp, ArrowDown, GripVertical, FolderIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -438,6 +438,68 @@ export function EditForm({ data, setData }: EditFormProps) {
           )}
         </div>
 
+
+        {/* Branding / Creator Section */}
+        <div className="p-6 border rounded-lg shadow-sm bg-card">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <FolderIcon className="h-5 w-5 text-indigo-500" />
+              <h2 className="text-2xl font-headline font-bold text-primary">ब्रँडिंग (Creator Branding)</h2>
+            </div>
+            <Switch
+              checked={data.branding?.isEnabled || false}
+              onCheckedChange={(checked) => setData({
+                ...data,
+                branding: {
+                  ...data.branding!,
+                  isEnabled: checked
+                }
+              })}
+            />
+          </div>
+
+          {(data.branding?.isEnabled) && (
+            <div className="animate-in fade-in zoom-in-95 duration-200 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="brandText">Brand Name</Label>
+                <Input
+                  id="brandText"
+                  value={data.branding?.text || ""}
+                  onChange={(e) => setData({
+                    ...data,
+                    branding: { ...data.branding!, text: e.target.value }
+                  })}
+                  placeholder="e.g. DigiArts Studio"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="brandLogo">Logo URL</Label>
+                <Input
+                  id="brandLogo"
+                  value={data.branding?.logoUrl || ""}
+                  onChange={(e) => setData({
+                    ...data,
+                    branding: { ...data.branding!, logoUrl: e.target.value }
+                  })}
+                  placeholder="https://..."
+                />
+                <p className="text-xs text-muted-foreground">URL of your logo image.</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="brandContact">Contact / Website</Label>
+                <Input
+                  id="brandContact"
+                  value={data.branding?.contact || ""}
+                  onChange={(e) => setData({
+                    ...data,
+                    branding: { ...data.branding!, contact: e.target.value }
+                  })}
+                  placeholder="e.g. +91 9876543210 or yourwebsite.com"
+                />
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Main Details */}
         <div className="p-6 border rounded-lg shadow-sm bg-card">
@@ -1083,72 +1145,6 @@ export function EditForm({ data, setData }: EditFormProps) {
               <PlusCircle className="mr-2 h-4 w-4" /> नवीन कार्ड जोडा
             </Button>
           </div>
-        </div>
-
-        <div className="p-6 border rounded-lg shadow-sm bg-card">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-headline font-semibold flex items-center gap-2">
-              क्रेडिट्स आणि लोगो (Credits & Logo)
-            </h2>
-            <Switch
-              checked={data.creatorFooter?.enabled || false}
-              onCheckedChange={(checked) => setData({
-                ...data,
-                creatorFooter: {
-                  text: "Designed by DigiInvite",
-                  ...data.creatorFooter,
-                  enabled: checked
-                }
-              })}
-            />
-          </div>
-
-          {data.creatorFooter?.enabled && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
-              <div className="grid gap-2">
-                <Label>फूटर मजकूर (Footer Text)</Label>
-                <Input
-                  value={data.creatorFooter.text || ''}
-                  onChange={(e) => setData({
-                    ...data,
-                    creatorFooter: {
-                      ...data.creatorFooter!,
-                      text: e.target.value
-                    }
-                  })}
-                  placeholder="Footer Text"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>लोगो URL (Logo URL - Optional)</Label>
-                <Input
-                  value={data.creatorFooter.logoUrl || ''}
-                  onChange={(e) => setData({
-                    ...data,
-                    creatorFooter: {
-                      ...data.creatorFooter!,
-                      logoUrl: e.target.value
-                    }
-                  })}
-                  placeholder="https://example.com/logo.png"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>वेबसाईट लिंक (Link URL - Optional)</Label>
-                <Input
-                  value={data.creatorFooter.linkUrl || ''}
-                  onChange={(e) => setData({
-                    ...data,
-                    creatorFooter: {
-                      ...data.creatorFooter!,
-                      linkUrl: e.target.value
-                    }
-                  })}
-                  placeholder="https://example.com"
-                />
-              </div>
-            </div>
-          )}
         </div>
 
         {/* AI Helper */}

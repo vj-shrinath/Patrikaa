@@ -217,8 +217,8 @@ export function CustomCardSection({ data, sectionId }: SectionProps & { sectionI
                             />
                         </div>
                     )}
-                    <h2 className={cn("mb-4 text-primary-foreground", section.fontTitle || 'font-headline', section.boldTitle && "font-bold", section.fontSizeTitle || 'text-2xl sm:text-4xl')} style={{ color: section.colorTitle }}>{section.title}</h2>
-                    <p className={cn("text-primary-foreground/90 whitespace-pre-wrap", section.fontContent || 'font-serif', section.boldContent && "font-bold", section.fontSizeContent || 'text-lg sm:text-xl')} style={{ color: section.colorContent }}>{section.content}</p>
+                    <h2 className={cn("mb-4 text-primary-foreground", section.fontTitle || 'font-headline', section.boldTitle && "font-bold")} >{section.title}</h2>
+                    <p className={cn("text-primary-foreground/90 whitespace-pre-wrap", section.fontContent || 'font-serif', section.boldContent && "font-bold")} >{section.content}</p>
                 </DecorativeFrame>
             </div>
         </section>
@@ -242,41 +242,6 @@ export function ScheduleSection({ data }: SectionProps) {
                         ))}
                     </div>
                 </DecorativeFrame>
-            </div>
-        </section>
-    );
-}
-
-export function CreatorFooterSection({ data }: SectionProps) {
-    if (!data.creatorFooter?.enabled) return null;
-
-    return (
-        <section className="fade-in-element w-full py-4 mt-auto">
-            <div className="max-w-2xl mx-auto px-4 flex flex-col items-center justify-center gap-2 text-center">
-                {data.creatorFooter.logoUrl && (
-                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-2 overflow-hidden rounded-full border-2 border-accent/30 shadow-sm bg-white/10 backdrop-blur-sm">
-                        <Image
-                            src={data.creatorFooter.logoUrl}
-                            alt="Creator Logo"
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
-                )}
-                {data.creatorFooter.linkUrl ? (
-                    <a
-                        href={data.creatorFooter.linkUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs sm:text-sm text-primary-foreground/60 hover:text-primary-foreground/90 transition-colors uppercase tracking-widest font-sans flex items-center gap-2"
-                    >
-                        {data.creatorFooter.text}
-                    </a>
-                ) : (
-                    <p className="text-xs sm:text-sm text-primary-foreground/60 uppercase tracking-widest font-sans">
-                        {data.creatorFooter.text}
-                    </p>
-                )}
             </div>
         </section>
     );
@@ -361,5 +326,38 @@ export function TopBannerSection({ data }: SectionProps) {
                 </div>
             </div>
         </div>
+    );
+}
+
+export function BrandingSection({ data }: SectionProps) {
+    if (!data.branding?.isEnabled) return null;
+
+    return (
+        <section className="page fade-in-element p-2 sm:p-8">
+            <div className="w-[95vw] sm:w-full max-w-2xl px-2 sm:px-8 pb-4 mx-auto">
+                <div className="flex flex-col items-center justify-center p-6 bg-background/50 backdrop-blur-sm rounded-xl border border-accent/20">
+                    {data.branding.logoUrl && (
+                        <div className="mb-3 relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border border-accent/30 shadow-sm">
+                            <Image
+                                src={data.branding.logoUrl}
+                                alt="Brand Logo"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                    )}
+                    {data.branding.text && (
+                        <p className="text-sm font-medium text-accent tracking-wider uppercase mb-1">
+                            {data.branding.text}
+                        </p>
+                    )}
+                    {data.branding.contact && (
+                        <p className="text-xs text-muted-foreground">
+                            {data.branding.contact}
+                        </p>
+                    )}
+                </div>
+            </div>
+        </section>
     );
 }

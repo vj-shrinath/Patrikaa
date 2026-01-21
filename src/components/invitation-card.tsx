@@ -3,7 +3,7 @@
 import type { InvitationData } from "@/lib/initial-data";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { cn } from "@/lib/utils";
-import { WelcomeSection, DateSection, ScheduleSection, VenueSection, CoupleSection, TopBannerSection, CustomCardSection, CreatorFooterSection } from "./sections";
+import { WelcomeSection, DateSection, ScheduleSection, VenueSection, CoupleSection, TopBannerSection, CustomCardSection, BrandingSection } from "./sections";
 import { FallingLeaves } from "./falling-leaves";
 
 type InvitationCardProps = {
@@ -42,7 +42,7 @@ export function InvitationCard({ data }: InvitationCardProps) {
       {data.theme === 'theme-autumn-floral' && <FallingLeaves />}
       <TopBannerSection data={data} />
       {order.map(section => renderSection(section))}
-      <CreatorFooterSection data={data} />
+      <BrandingSection data={data} />
     </div>
   );
 }

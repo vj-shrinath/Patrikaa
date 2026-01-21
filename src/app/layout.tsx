@@ -4,8 +4,31 @@ import { Toaster } from "@/components/ui/toaster"
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://digiinvite.in'),
   title: 'Digital Invite',
   description: 'Create your beautiful Marathi digital wedding invitation.',
+  openGraph: {
+    title: 'Digital Invite',
+    description: 'Create your beautiful Marathi digital wedding invitation.',
+    url: 'https://digiinvite.in',
+    siteName: 'Digital Invite',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Digital Invite Preview',
+      },
+    ],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Digital Invite',
+    description: 'Create your beautiful Marathi digital wedding invitation.',
+    images: ['/og-image.jpg'],
+  },
 };
 
 import { Footer } from "@/components/footer";

@@ -373,6 +373,8 @@ export function TopBannerSection({ data }: SectionProps) {
 export function BrandingSection({ data }: SectionProps) {
     if (!data.branding?.isEnabled) return null;
 
+    const isButton = data.branding.type === 'button';
+
     return (
         <section className="page fade-in-element p-2 sm:p-8">
             <div className="w-[95vw] sm:w-full max-w-2xl px-2 sm:px-8 pb-4 mx-auto">
@@ -388,14 +390,34 @@ export function BrandingSection({ data }: SectionProps) {
                         </div>
                     )}
                     {data.branding.text && (
-                        <p className="text-sm font-medium text-accent tracking-wider uppercase mb-1">
+                        <p className="text-sm font-medium text-accent tracking-wider uppercase mb-2">
                             {data.branding.text}
                         </p>
                     )}
-                    {data.branding.contact && (
-                        <p className="text-xs text-muted-foreground">
-                            {data.branding.contact}
-                        </p>
+
+                    {isButton ? (
+                        <Button
+                            asChild
+                            variant="outline"
+                            className="gap-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground rounded-full transition-all"
+                        >
+                            <a
+                                href={`https://wa.me/${data.branding.whatsappNumber}?text=${encodeURIComponent(data.branding.whatsappMessage || '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 fill-current">
+                                    <path d="M17.472 14.382C17.112 14.192 15.32 13.307 14.987 13.193C14.654 13.079 14.414 13.022 14.174 13.382C13.934 13.742 13.253 14.542 13.053 14.762C12.853 14.982 12.653 15.002 12.293 14.822C11.933 14.642 10.773 14.262 9.387 13.022C8.28 12.032 7.533 10.822 7.333 10.462C7.133 10.102 7.313 9.922 7.493 9.742C7.653 9.582 7.853 9.322 8.033 9.122C8.213 8.922 8.273 8.762 8.393 8.522C8.513 8.282 8.453 8.082 8.373 7.902C8.293 7.722 7.553 5.902 7.253 5.182C6.953 4.462 6.653 4.562 6.433 4.562C6.233 4.562 6.013 4.562 5.793 4.562C5.573 4.562 5.213 4.642 4.913 4.962C4.613 5.282 3.773 6.082 3.773 7.702C3.773 9.322 4.953 10.882 5.133 11.122C5.313 11.362 7.433 15.622 11.033 17.202C13.513 18.282 14.393 18.222 15.233 18.122C16.153 18.022 18.093 16.982 18.513 15.822C18.913 14.642 18.913 13.622 18.793 13.442C18.673 13.262 18.413 13.182 18.053 13.002H18.072H17.472ZM12.0001 21.0004H11.9401C10.1801 21.0004 8.50012 20.5204 7.02012 19.6404L3.00012 21.0004L4.40012 16.9004C3.44012 15.3204 2.92012 13.5204 2.92012 11.6004C2.92012 6.42041 7.14012 2.22041 12.3201 2.22041C14.8201 2.22041 17.1801 3.20041 18.9401 4.96041C20.7001 6.72041 21.6801 9.06041 21.6801 11.5804C21.6601 16.7604 17.4801 21.0004 12.0001 21.0004Z" />
+                                </svg>
+                                {data.branding.buttonText || "Chat with us"}
+                            </a>
+                        </Button>
+                    ) : (
+                        data.branding.contact && (
+                            <p className="text-xs text-muted-foreground">
+                                {data.branding.contact}
+                            </p>
+                        )
                     )}
                 </div>
             </div>

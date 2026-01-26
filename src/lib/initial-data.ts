@@ -146,6 +146,10 @@ export type InvitationData = {
     text: string;
     logoUrl?: string;
     contact?: string;
+    type?: 'text' | 'button'; // 'text' for basic contact, 'button' for WhatsApp button
+    buttonText?: string;
+    whatsappNumber?: string;
+    whatsappMessage?: string;
   };
   galleryConfig?: {
     autoscroll: boolean;
@@ -276,7 +280,11 @@ export const initialData: InvitationData = {
     isEnabled: false,
     text: "Created with DigiInvite",
     logoUrl: "",
-    contact: ""
+    contact: "",
+    type: 'text',
+    buttonText: "Chat with us",
+    whatsappNumber: "",
+    whatsappMessage: "Hi, I would like to inquire about..."
   },
   galleryConfig: {
     autoscroll: false

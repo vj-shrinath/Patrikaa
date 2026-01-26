@@ -518,17 +518,83 @@ export function EditForm({ data, setData }: EditFormProps) {
                 />
                 <p className="text-xs text-muted-foreground">URL of your logo image.</p>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="brandContact">Contact / Website</Label>
-                <Input
-                  id="brandContact"
-                  value={data.branding?.contact || ""}
-                  onChange={(e) => setData({
-                    ...data,
-                    branding: { ...data.branding!, contact: e.target.value }
-                  })}
-                  placeholder="e.g. +91 9876543210 or yourwebsite.com"
-                />
+              <div className="space-y-4 pt-2 border-t border-border/50">
+                <div className="space-y-2">
+                  <Label>Contact Type</Label>
+                  <RadioGroup
+                    value={data.branding?.type || 'text'}
+                    onValueChange={(val: 'text' | 'button') => setData({
+                      ...data,
+                      branding: { ...data.branding!, type: val }
+                    })}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="text" id="type-text" />
+                      <Label htmlFor="type-text">Simple Text</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="button" id="type-button" />
+                      <Label htmlFor="type-button">WhatsApp Button</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {data.branding?.type === 'button' ? (
+                  <div className="space-y-3 pl-2 border-l-2 border-primary/20">
+                    <div className="space-y-2">
+                      <Label htmlFor="buttonText" className="text-xs">Button Text</Label>
+                      <Input
+                        id="buttonText"
+                        value={data.branding?.buttonText || "Chat with us"}
+                        onChange={(e) => setData({
+                          ...data,
+                          branding: { ...data.branding!, buttonText: e.target.value }
+                        })}
+                        placeholder="eg. Chat with us"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="whatsappNumber" className="text-xs">WhatsApp Number</Label>
+                      <Input
+                        id="whatsappNumber"
+                        value={data.branding?.whatsappNumber || ""}
+                        onChange={(e) => setData({
+                          ...data,
+                          branding: { ...data.branding!, whatsappNumber: e.target.value }
+                        })}
+                        placeholder="eg. 919876543210 (with country code)"
+                      />
+                      <p className="text-[10px] text-muted-foreground">Enter number with country code without + (e.g., 919999999999)</p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="whatsappMessage" className="text-xs">Prefilled Message</Label>
+                      <Textarea
+                        id="whatsappMessage"
+                        value={data.branding?.whatsappMessage || ""}
+                        onChange={(e) => setData({
+                          ...data,
+                          branding: { ...data.branding!, whatsappMessage: e.target.value }
+                        })}
+                        placeholder="Message sent when user clicks button"
+                        className="h-20"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Label htmlFor="brandContact">Contact / Website</Label>
+                    <Input
+                      id="brandContact"
+                      value={data.branding?.contact || ""}
+                      onChange={(e) => setData({
+                        ...data,
+                        branding: { ...data.branding!, contact: e.target.value }
+                      })}
+                      placeholder="e.g. +91 9876543210 or yourwebsite.com"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           )}

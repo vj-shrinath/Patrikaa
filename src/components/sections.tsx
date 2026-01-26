@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import type { InvitationData } from "@/lib/initial-data";
 import { Sparkles } from "./Sparkles";
@@ -111,12 +111,47 @@ export function WelcomeSection({ data }: SectionProps) {
 export function CoupleSection({ data }: SectionProps) {
     const hasGallery = data.gallery && data.gallery.length > 0;
     const hasCoupleImage = !!data.coupleImageUrl;
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const isUserInteracting = useRef(false);
+
+    useEffect(() => {
+        const scrollContainer = scrollRef.current;
+        if (!data.galleryConfig?.autoscroll || !scrollContainer) return;
+
+        const scrollNext = () => {
+            if (!scrollContainer || isUserInteracting.current) return;
+            // Enhanced scroll logic
+            const currentScroll = scrollContainer.scrollLeft;
+            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+            // Allow for some tolerance in equality check
+            if (currentScroll >= maxScroll - 5) {
+                // Determine direction based on loop preference
+                scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                // Calculate item width dynamically
+                const firstItem = scrollContainer.firstElementChild as HTMLElement;
+                const itemWidth = firstItem ? firstItem.offsetWidth : 300;
+                const gap = 32; // Approx gap-8
+
+                scrollContainer.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
+            }
+        };
+
+        const intervalId = setInterval(scrollNext, 3000);
+
+        return () => clearInterval(intervalId);
+    }, [data.galleryConfig?.autoscroll, data.gallery]);
 
     if (!hasGallery && !hasCoupleImage) return null;
 
     const mediaItems = hasGallery
         ? data.gallery!
         : [{ type: 'image' as const, url: data.coupleImageUrl! }];
+
+    const stopAutoscroll = () => {
+        isUserInteracting.current = true;
+    };
 
     return (
         <section className="page fade-in-element justify-center p-2 sm:p-8">
@@ -125,7 +160,12 @@ export function CoupleSection({ data }: SectionProps) {
                     {/* Increased padding (py-10) to prevent glow cutoff. 
                         Responsive padding (px) to allow full scroll. 
                         items-center and snap logic retained. */}
-                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-8 py-10 px-4 no-scrollbar items-center justify-start sm:justify-center w-full">
+                    <div
+                        ref={scrollRef}
+                        className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-8 py-10 px-4 no-scrollbar items-center justify-start sm:justify-center w-full"
+                        onTouchStart={stopAutoscroll}
+                        onMouseDown={stopAutoscroll}
+                    >
                         {mediaItems.map((item, index) => (
                             <div key={index} className="snap-center shrink-0 transform transition-transform duration-300">
                                 <div className="premium-photo-frame">
@@ -137,6 +177,7 @@ export function CoupleSection({ data }: SectionProps) {
                                                 controls
                                                 playsInline
                                                 className="w-full h-full object-cover"
+                                                onPlay={stopAutoscroll}
                                             />
                                         ) : (
                                             <Image

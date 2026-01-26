@@ -147,6 +147,9 @@ export type InvitationData = {
     logoUrl?: string;
     contact?: string;
   };
+  galleryConfig?: {
+    autoscroll: boolean;
+  };
 };
 
 
@@ -274,5 +277,8 @@ export const initialData: InvitationData = {
     text: "Created with DigiInvite",
     logoUrl: "",
     contact: ""
+  },
+  galleryConfig: {
+    autoscroll: false
   }
 };

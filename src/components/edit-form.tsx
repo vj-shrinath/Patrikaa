@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { InvitationData } from "@/lib/initial-data";
 import { Switch } from "@/components/ui/switch";
-import { PlusCircle, Trash2, Wand2, Loader2, Palette, Star, ArrowUp, ArrowDown, GripVertical, FolderIcon } from "lucide-react";
+import { PlusCircle, Trash2, Wand2, Loader2, Palette, Star, ArrowUp, ArrowDown, GripVertical, FolderIcon, ArrowLeft, ArrowRight, Pencil, Check, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -50,6 +50,8 @@ export function EditForm({ data, setData }: EditFormProps) {
   const [aiSuggestions, setAiSuggestions] = useState<{ suggestedMessage: string; designAdjustments: string; } | null>(null);
   const [newMediaType, setNewMediaType] = useState<'image' | 'video'>('image');
   const [newMediaUrl, setNewMediaUrl] = useState('');
+  const [editingGalleryIndex, setEditingGalleryIndex] = useState<number | null>(null);
+  const [editingGalleryUrl, setEditingGalleryUrl] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -131,6 +133,37 @@ export function EditForm({ data, setData }: EditFormProps) {
     if (!data.gallery) return;
     const newGallery = data.gallery.filter((_, i) => i !== index);
     setData({ ...data, gallery: newGallery });
+  };
+
+  const moveGalleryItem = (index: number, direction: 'left' | 'right') => {
+    if (!data.gallery) return;
+    const newGallery = [...data.gallery];
+    if (direction === 'left' && index > 0) {
+      [newGallery[index], newGallery[index - 1]] = [newGallery[index - 1], newGallery[index]];
+    } else if (direction === 'right' && index < newGallery.length - 1) {
+      [newGallery[index], newGallery[index + 1]] = [newGallery[index + 1], newGallery[index]];
+    }
+    setData({ ...data, gallery: newGallery });
+  };
+
+  const startEditingGalleryItem = (index: number) => {
+    if (!data.gallery) return;
+    setEditingGalleryIndex(index);
+    setEditingGalleryUrl(data.gallery[index].url);
+  };
+
+  const saveGalleryItem = (index: number) => {
+    if (!data.gallery) return;
+    const newGallery = [...data.gallery];
+    newGallery[index] = { ...newGallery[index], url: editingGalleryUrl };
+    setData({ ...data, gallery: newGallery });
+    setEditingGalleryIndex(null);
+    setEditingGalleryUrl('');
+  };
+
+  const cancelEditingGalleryItem = () => {
+    setEditingGalleryIndex(null);
+    setEditingGalleryUrl('');
   };
 
   const handleAdaptContent = async () => {
@@ -593,7 +626,24 @@ export function EditForm({ data, setData }: EditFormProps) {
         {/* Images */}
         {/* Images/Gallery */}
         <div className="p-6 border rounded-lg shadow-sm bg-card">
-          <h2 className="text-2xl font-headline font-bold text-primary mb-4">फोटो आणि व्हिडिओ गॅलरी</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-headline font-bold text-primary">फोटो आणि व्हिडिओ गॅलरी</h2>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="autoscroll-toggle">Autoscroll</Label>
+              <Switch
+                id="autoscroll-toggle"
+                checked={data.galleryConfig?.autoscroll || false}
+                onCheckedChange={(checked) => setData({
+                  ...data,
+                  galleryConfig: {
+                    // @ts-ignore
+                    ...data.galleryConfig,
+                    autoscroll: checked
+                  }
+                })}
+              />
+            </div>
+          </div>
 
           {/* Legacy single image support - optional, or we can just migrate visualy */}
           <div className="space-y-4">
@@ -623,26 +673,87 @@ export function EditForm({ data, setData }: EditFormProps) {
               {/* Show legacy coupleImageUrl if it exists and gallery is empty - strictly for migration visualization, 
                      but best to encourage adding to gallery. We will just show gallery here. */}
               {data.gallery && data.gallery.map((item, index) => (
-                <div key={index} className="relative group border rounded-lg overflow-hidden aspect-[3/4] bg-muted">
-                  {item.type === 'video' ? (
-                    <div className="w-full h-full flex items-center justify-center bg-black/10">
-                      <span className="text-xs font-mono">Video</span>
+                <div key={index} className="relative group border rounded-lg overflow-hidden aspect-[3/4] bg-muted flex flex-col">
+                  {editingGalleryIndex === index ? (
+                    <div className="absolute inset-0 z-10 bg-background/90 p-2 flex flex-col justify-center gap-2">
+                      <Label htmlFor={`edit-gallery-${index}`} className="text-xs">Edit URL</Label>
+                      <Textarea
+                        id={`edit-gallery-${index}`}
+                        value={editingGalleryUrl}
+                        onChange={(e) => setEditingGalleryUrl(e.target.value)}
+                        className="h-24 text-xs resize-none"
+                      />
+                      <div className="flex gap-2 justify-end">
+                        <Button size="sm" variant="ghost" onClick={cancelEditingGalleryItem}>
+                          <X className="w-4 h-4" />
+                        </Button>
+                        <Button size="sm" onClick={() => saveGalleryItem(index)}>
+                          <Check className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.url} alt="" className="w-full h-full object-cover" />
+                    <>
+                      <div className="flex-grow relative overflow-hidden">
+                        {item.type === 'video' ? (
+                          <div className="w-full h-full flex items-center justify-center bg-black/10">
+                            <span className="text-xs font-mono">Video</span>
+                          </div>
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={item.url} alt="" className="w-full h-full object-cover" />
+                        )}
+
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                          <Button
+                            variant="secondary"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => startEditingGalleryItem(index)}
+                            title="Edit Link"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => removeGalleryItem(index)}
+                            title="Remove"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+
+                        {/* Reorder Buttons */}
+                        <div className="absolute bottom-10 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity flex justify-center gap-2 pointer-events-none">
+                          <Button
+                            variant="secondary"
+                            size="icon"
+                            className="h-8 w-8 pointer-events-auto shadow-md"
+                            onClick={() => moveGalleryItem(index, 'left')}
+                            disabled={index === 0}
+                            title="Move Previous"
+                          >
+                            <ArrowLeft className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            size="icon"
+                            className="h-8 w-8 pointer-events-auto shadow-md"
+                            onClick={() => moveGalleryItem(index, 'right')}
+                            disabled={index === (data.gallery?.length || 0) - 1}
+                            title="Move Next"
+                          >
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="bg-black/50 text-white text-xs p-1 truncate px-2 h-8 shrink-0 flex items-center">
+                        {item.url}
+                      </div>
+                    </>
                   )}
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
-                    onClick={() => removeGalleryItem(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 truncate px-2">
-                    {item.url}
-                  </div>
                 </div>
               ))}
             </div>

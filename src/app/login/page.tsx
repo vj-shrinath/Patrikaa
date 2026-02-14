@@ -27,6 +27,7 @@ import {
 import { useAuth, useUser } from '@/firebase';
 import {
   signInWithPopup,
+  signInWithEmailAndPassword,
   GoogleAuthProvider,
   AuthError,
   UserCredential,
@@ -40,7 +41,13 @@ const profileSchema = z.object({
   phone: z.string().min(10, { message: 'Phone number is required.' }),
 });
 
+const loginSchema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+});
+
 type ProfileFormValues = z.infer<typeof profileSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const auth = useAuth();
@@ -57,6 +64,11 @@ export default function LoginPage() {
   const profileForm = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: { name: '', phone: '' },
+  });
+
+  const loginForm = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
   });
 
   useEffect(() => {
@@ -183,6 +195,28 @@ export default function LoginPage() {
     }
   };
 
+  const handleEmailLogin = async (data: LoginFormValues) => {
+    setIsLoading(true);
+    try {
+      // Check if trying to login as admin via customer portal
+      if (data.email.toLowerCase() === 'admin@vijay.com') {
+        toast({
+          variant: 'destructive',
+          title: 'Access Restricted',
+          description: 'Admin users must log in via the Admin Portal.',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const result = await signInWithEmailAndPassword(auth, data.email, data.password);
+      await handleAuthSuccess(result);
+    } catch (error) {
+      handleAuthError(error as AuthError);
+      setIsLoading(false);
+    }
+  };
+
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
@@ -234,7 +268,7 @@ export default function LoginPage() {
         description = 'Sign in was cancelled.';
         break;
       case 'auth/operation-not-allowed':
-        description = 'This sign-in method is not enabled in the Firebase Console. Please enable Email/Password and Google Sign-in providers.';
+        description = 'This sign-in method is not enabled. Please initiate contact with support.';
         break;
     }
     toast({
@@ -266,12 +300,59 @@ export default function LoginPage() {
             Sign in to access your dashboard.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <form onSubmit={loginForm.handleSubmit(handleEmailLogin)} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                placeholder="name@example.com"
+                type="email"
+                {...loginForm.register('email')}
+                disabled={isLoading}
+              />
+              {loginForm.formState.errors.email && (
+                <p className="text-sm text-destructive">
+                  {loginForm.formState.errors.email.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                {...loginForm.register('password')}
+                disabled={isLoading}
+              />
+              {loginForm.formState.errors.password && (
+                <p className="text-sm text-destructive">
+                  {loginForm.formState.errors.password.message}
+                </p>
+              )}
+            </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Signing In...' : 'Sign In with Email'}
+            </Button>
+          </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
           <Button variant="outline" type="button" className="w-full" onClick={handleGoogleLogin} disabled={isLoading}>
             <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
               <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
             </svg>
-            Continue with Google
+            Google
           </Button>
 
           <div className="mt-6 text-center text-xs text-muted-foreground">

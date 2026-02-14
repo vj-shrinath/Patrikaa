@@ -117,7 +117,7 @@ export default function DashboardPage() {
     if (isFirstInvitation) {
       router.push('/editor');
     } else {
-      const cost = 150;
+      const cost = 599;
       if (walletBalance < cost) {
         setDialogState({
           isOpen: true,
@@ -206,7 +206,14 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div>
             <h1 className="text-3xl font-bold text-primary">My Invitations</h1>
-            <p className="text-muted-foreground">Manage your wedding invitations here.</p>
+            <div>
+              <p className="text-muted-foreground">Manage your wedding invitations here.</p>
+              {user && (
+                <p className="text-sm font-medium text-foreground mt-1">
+                  Logged in as: <span className="text-primary">{user.displayName || user.email}</span>
+                </p>
+              )}
+            </div>
           </div>
           <Button onClick={handleCreateClick}>
             <PlusCircle className="mr-2 h-4 w-4" />
